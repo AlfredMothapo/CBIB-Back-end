@@ -24,6 +24,7 @@ class DBcon {
   close_connection() {
     //closes the connection
     this.con.end();
+    console.log("holla");
   }
 }
 exports.DBcon = DBcon;

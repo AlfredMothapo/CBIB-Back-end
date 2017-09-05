@@ -15,9 +15,12 @@ let app = express();
 //middlewares
 app.use(express.static("public")); //serve static files
 app.use(cors()); //enables all cors requests
+var corsOptions = {
+    origin: 'http://localhost:8080',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 
-//routes
-app.get("/", function (req, resp) {
+    //routes
+};app.get("/", cors(corsOptions), function (req, resp, next) {
     //returns all research outputs.
     var response = {};
     var sql = "select title,type,publication_year,additional_info,first_name as author from users INNER JOIN authors ON users.user_id = authors.author_id INNER JOIN research_outputs ON research_outputs.ro_id=authors.ro_id " + "INNER JOIN research_types ON  research_outputs.ro_type  = research_types.type_id";
