@@ -8,6 +8,7 @@
     "express-session": "^1.15.5",
     "json-stringify-safe": "^5.0.1",
     "mysql": "^2.14.1",
+    "pdfkit": "^0.8.3",
     "promise-mysql": "^3.0.2"
   },
   "//": "babel-register is needed for mocha",
@@ -24,5 +25,4 @@
     "build": "npm run clean  && npm run build-source && npm run start",
     "clean": "rm -rf build && mkdir build"
   }
-
 }
