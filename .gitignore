@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 build/
 .idea/
+src/db_connection.js
 # Runtime data
 pids
 *.pid
