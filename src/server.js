@@ -27,6 +27,21 @@ app.get("/",cors(corsOptions),function (req,resp,next) { //returns all research 
         resp.end(stringify(response,null,1));
     })
 })
+app.get('/detailed_view/:_id', function (req, res) {
+
+    var researchDetails;
+
+    var queryString = "select title, type, publication_year, additional_info, proof_link, research_types.type as type, users.first_name AS Author_First_Name, users.last_name AS Author_Last_Name from research_outputs  " +
+        "JOIN research_types ON ro_type = type_id  JOIN authors ON authors.ro_id = research_outputs.ro_id JOIN users ON users.user_id = authors.author_id WHERE ro_type = ?";
+
+    connection.query(queryString, [req.params._id], function (err, result, field) {
+        if (err) throw err;
+
+        researchDetails = result;
+        res.send(stringify(researchDetails,null,1));
+    });
+
+})
 
 app.listen(3000,()=>{
   console.log("server started: listening at port:3000");
