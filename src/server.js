@@ -61,6 +61,6 @@ app.post('/outputs', jsonParser, (req, resp) => {
    output.save();
   resp.send('success');
 });
-app.listen(3500, () => {
-  console.log('server started: listening at port:3500');
+app.listen(3000, () => {
+  console.log('server started: listening at port:3000');
 });

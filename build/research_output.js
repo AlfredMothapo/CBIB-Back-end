@@ -9,7 +9,7 @@ var _db_connection = require('./db_connection');
 
 //
 class ResearchOutput {
-    constructor(title, pubYear, addInfo, type) {
+    constructor(title, pubYear, addInfo, type, firstName, lastName) {
         this.title = title;
         this.publication_year = pubYear;
         this.additional_info = addInfo;
@@ -17,6 +17,8 @@ class ResearchOutput {
         this.db_con = new _db_connection.DBcon();
         this.proof_verified = 0;
         this.proof_link = 'www';
+        this.first_name = firstName;
+        this.last_name = lastName;
         this.connection = this.db_con.getConnection(); //db connection
     }
     getProofVerified() {
@@ -37,6 +39,19 @@ class ResearchOutput {
             });
         });
     }
+    // createAuthor() {
+    //   const sql = 'INSERT INTO users (first_name, last_name,' +
+    //   'email,date_registered,password,verification_token,verified_status,access_id),' +
+    //   ' values(?,?,?,?,?,?,?,?)';
+    //   this.connection.query(sql, [this.first_name, this.last_name, 'someone@example.com',
+    // '2017/02/05', 'weweetwtwrtrwttw', 0, 1], (err) => {
+    //   if (err) {
+    //     throw err;
+    //   }
+    //   console.log('user created');
+    // });
+    // const sql2 = 'INSERT INTO authors';
+    // }
 }
 exports.ResearchOutput = ResearchOutput;
 //# sourceMappingURL=research_output.js.map

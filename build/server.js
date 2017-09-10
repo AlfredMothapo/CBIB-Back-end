@@ -42,13 +42,12 @@ app.get('/detailed_view/:id', (req, res) => {
     connection.query(queryString, [req.params.id], (err, result) => {
         if (err) throw err;
         researchDetails = result;
-        res.send(stringify(researchDetails, null, 1));
+        res.end(stringify(researchDetails, null, 1));
     });
 });
 app.post('/outputs', jsonParser, (req, resp) => {
     const output = new _research_output.ResearchOutput(req.body.title, req.body.publication_year, req.body.additional_info, req.body.text, req.body.type);
     output.save();
-    console.log(req.body);
     resp.send('success');
 });
 app.listen(3500, () => {
