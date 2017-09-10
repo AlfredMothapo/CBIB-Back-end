@@ -7,6 +7,7 @@
     "cors": "^2.8.4",
     "express": "^4.15.4",
     "express-session": "^1.15.5",
+    "express-validator": "^4.1.1",
     "json-stringify-safe": "^5.0.1",
     "mysql": "^2.14.1",
     "pdfkit": "^0.8.3",
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "build-source": "babel -d ./build ./src -s",
-    "start": "node ./build/server.js",
+    "start": "nodemon ./build/server.js",
     "build": "npm run clean  && npm run build-source && npm run start",
     "clean": "rm -rf build && mkdir build"
   }

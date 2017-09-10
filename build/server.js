@@ -2,28 +2,33 @@
 
 var _db_connection = require('./db_connection');
 
-//database connection
-const dbCon = new _db_connection.DBcon(); //imports
+var _research_output = require('./research_output');
 
+//database connection
+//imports
+const dbCon = new _db_connection.DBcon();
 const connection = dbCon.getConnection();
 //other required modules
 const stringify = require('json-stringify-safe');
 const express = require('express'); //for converting circular objects to json
 const cors = require('cors'); //cross-site orign
+const bodyParser = require('body-parser');
 
 const app = express();
 //middlewares
 app.use(express.static('public')); //serve static files
 app.use(cors()); //enables all cors requests
+
 const corsOptions = {
     origin: 'http://localhost:8080',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
+const jsonParser = bodyParser.json();
 //routes
 app.get('/basic-research-outputs', cors(corsOptions), (req, resp) => {
     //returns all research outputs.
     const response = {};
-    const sql = 'select research_outputs.ro_id as id,title,type,publication_year,' + 'additional_info,first_name as Author_First_name ' + ', last_name as Author_Last_Name from users INNER JOIN authors ON ' + 'users.user_id = authors.author_id INNER JOIN research_outputs ON ' + ' research_outputs.ro_id=authors.ro_id ' + 'INNER JOIN research_types ON  research_outputs.ro_type  = research_types.type_id';
+    const sql = 'select research_outputs.ro_id as id,title,type,publication_year,' + 'additional_info,first_name as Author_First_Name ' + ', last_name as Author_Last_Name from users INNER JOIN authors ON ' + 'users.user_id = authors.author_id INNER JOIN research_outputs ON ' + ' research_outputs.ro_id=authors.ro_id ' + 'INNER JOIN research_types ON  research_outputs.ro_type  = research_types.type_id';
     connection.query(sql, (err, result) => {
         if (err) throw err;
         response.outputs = result;
@@ -40,7 +45,13 @@ app.get('/detailed_view/:id', (req, res) => {
         res.send(stringify(researchDetails, null, 1));
     });
 });
-app.listen(3000, () => {
-    console.log('server started: listening at port:3000');
+app.post('/outputs', jsonParser, (req, resp) => {
+    const output = new _research_output.ResearchOutput(req.body.title, req.body.publication_year, req.body.additional_info, req.body.text, req.body.type);
+    output.save();
+    console.log(req.body);
+    resp.send('success');
+});
+app.listen(3500, () => {
+    console.log('server started: listening at port:3500');
 });
 //# sourceMappingURL=server.js.map
