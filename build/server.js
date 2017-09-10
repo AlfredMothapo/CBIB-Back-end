@@ -23,7 +23,7 @@ const corsOptions = {
 app.get('/basic-research-outputs', cors(corsOptions), (req, resp) => {
     //returns all research outputs.
     const response = {};
-    const sql = 'select research_outputs.ro_id as id,title,type,publication_year,' + 'additional_info,first_name as author from users INNER JOIN authors ON ' + 'users.user_id = authors.author_id INNER JOIN research_outputs ON ' + ' research_outputs.ro_id=authors.ro_id ' + 'INNER JOIN research_types ON  research_outputs.ro_type  = research_types.type_id';
+    const sql = 'select research_outputs.ro_id as id,title,type,publication_year,' + 'additional_info,first_name as Author_First_name ' + ', last_name as Author_Last_Name from users INNER JOIN authors ON ' + 'users.user_id = authors.author_id INNER JOIN research_outputs ON ' + ' research_outputs.ro_id=authors.ro_id ' + 'INNER JOIN research_types ON  research_outputs.ro_type  = research_types.type_id';
     connection.query(sql, (err, result) => {
         if (err) throw err;
         response.outputs = result;
