@@ -3,28 +3,28 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var mysql = require('mysql');
+const mysql = require('mysql');
+
 class DBcon {
   constructor() {
     this.con = mysql.createConnection({
       host: 'localhost',
-      user: 'ntuthuko', //change to your username
-      password: '68884856', //your password
-      database: 'cbib' //your database name
+      user: 'root', //change to your username
+      password: '', //your password
+      database: 'cb' //your database name
     });
   }
   getConnection() {
     //connects to mysql and returns the connection
-    this.con.connect(function (err) {
+    this.con.connect(err => {
       if (err) throw err;
-      console.log("Database connected!");
+      console.log('Database connected!');
     });
     return this.con;
   }
   close_connection() {
     //closes the connection
     this.con.end();
-    console.log("holla");
   }
 }
 exports.DBcon = DBcon;

@@ -15,6 +15,7 @@
   "//": "babel-register is needed for mocha",
   "devDependencies": {
     "babel-register": "^6.2.0",
+    "eslint-config-rallycoding": "^3.2.0",
     "express": "^4.15.4",
     "mocha": "^2.2.5",
     "nodemon": "^1.11.0",
