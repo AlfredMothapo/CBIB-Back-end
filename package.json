@@ -23,9 +23,13 @@
     "promise-mysql": "^3.0.2"
   },
   "scripts": {
-    "build-source": "babel -d ./build ./src -s",
+    "build-source": "babel -d ./build/src ./src -s",
+    "build-models": "babel -d ./build/models ./models -s",
+    "build-root": "babel -d ./build ./db_connection.js -s",
+    "build-controllers": "babel -d ./build/controllers ./controllers -s",
+    "build-server": "babel -d ./build ./server.js -s",
     "start": "nodemon ./build/server.js",
-    "build": "npm run clean  && npm run build-source && npm run start",
-    "clean": "rm -rf build && mkdir build"
+    "build": "npm run clean  && npm run build-models && npm run build-controllers && npm run build-root && npm run build-server && npm run start",
+    "clean": "rm -rf build && mkdir build "
   }
 }

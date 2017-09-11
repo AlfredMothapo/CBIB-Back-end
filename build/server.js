@@ -2,11 +2,13 @@
 
 var _db_connection = require('./db_connection');
 
-var _research_output = require('./research_output');
+var _homePageController = require('./controllers/homePageController');
+
+var _researchOutputController = require('./controllers/researchOutputController');
 
 //database connection
-//imports
-const dbCon = new _db_connection.DBcon();
+const dbCon = new _db_connection.DBcon(); //imports
+
 const connection = dbCon.getConnection();
 //other required modules
 const stringify = require('json-stringify-safe');
@@ -35,22 +37,37 @@ app.get('/basic-research-outputs', cors(corsOptions), (req, resp) => {
         resp.end(stringify(response, null, 1));
     });
 });
-app.get('/detailed_view/:id', (req, res) => {
-    let researchDetails = null;
-    const queryString = 'select research_outputs.ro_id as id, ' + 'title, type, publication_year, additional_info, ' + 'proof_link, research_types.type as type, users.first_name AS Author_First_Name, ' + 'users.last_name AS Author_Last_Name from research_outputs  ' + 'JOIN research_types ON ro_type = type_id ' + 'JOIN authors ON authors.ro_id = research_outputs.ro_id JOIN users ON ' + 'users.user_id = authors.author_id WHERE research_outputs.ro_id = ?';
 
-    connection.query(queryString, [req.params.id], (err, result) => {
-        if (err) throw err;
-        researchDetails = result;
-        res.end(stringify(researchDetails, null, 1));
-    });
+app.get('/home', (req, resp) => {
+    _homePageController.homeController.index(req, resp);
+});
+
+app.get('/basic', (req, resp) => {
+    _researchOutputController.ResearchOutputController.getBasic(req, resp);
+});
+
+app.get('/detailed_view/:id', (req, resp) => {
+    _researchOutputController.ResearchOutputController.getBasicById(req, resp);
+    // let researchDetails = null;
+    // const queryString = 'select research_outputs.ro_id as id, ' +
+    // 'title, type, publication_year, additional_info, ' +
+    // 'proof_link, research_types.type as type, users.first_name AS Author_First_Name, ' +
+    // 'users.last_name AS Author_Last_Name from research_outputs  ' +
+    //     'JOIN research_types ON ro_type = type_id ' +
+    //     'JOIN authors ON authors.ro_id = research_outputs.ro_id JOIN users ON ' +
+    //     'users.user_id = authors.author_id WHERE research_outputs.ro_id = ?';
+    //
+    // connection.query(queryString, [req.params.id],
+    //   (err, result) => {
+    //     if (err) throw err;
+    //     researchDetails = result;
+    //     res.end(stringify(researchDetails, null, 1));
+    // });
 });
 app.post('/outputs', jsonParser, (req, resp) => {
-    const output = new _research_output.ResearchOutput(req.body.title, req.body.publication_year, req.body.additional_info, req.body.text, req.body.type);
-    output.save();
-    resp.send('success');
+    _researchOutputController.ResearchOutputController.saveResearchOutput(req, resp);
 });
-app.listen(3500, () => {
-    console.log('server started: listening at port:3500');
+app.listen(3000, () => {
+    console.log('server started: listening at port:3000');
 });
 //# sourceMappingURL=server.js.map
