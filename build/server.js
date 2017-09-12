@@ -2,9 +2,11 @@
 
 var _researchOutputController = require('./controllers/researchOutputController');
 
+var _userController = require('./controllers/userController');
+
 //other required modules
-const express = require('express'); //for converting circular objects to json
 //imports
+const express = require('express'); //for converting circular objects to json
 const cors = require('cors'); //cross-site orign
 const bodyParser = require('body-parser');
 
@@ -35,9 +37,15 @@ app.get('/detailed_view/:id', (req, resp) => {
 app.post('/outputs', jsonParser, (req, resp) => {
   _researchOutputController.ResearchOutputController.saveResearchOutput(req, resp);
 });
+
 // 4. Delete a research output by id.
 app.get('/delete_research/:id', (req, resp) => {
   _researchOutputController.ResearchOutputController.deleteById(req, resp);
+});
+
+
+app.get('/get-users', (req, resp) => {
+  _userController.UserController.getUsers(req, resp);
 });
 
 //start the server on port 3000
