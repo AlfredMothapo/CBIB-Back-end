@@ -15,9 +15,9 @@ export class ResearchOutputController {
 //saves a research output
   static saveResearchOutput(req, resp) {
     //creates a new research output.
-    const researcOutput = new ResearchOutputModel(req.body.title, req.body.publication_year,
+    const researchOutput = new ResearchOutputModel(req.body.title, req.body.publication_year,
      req.body.additional_info, req.body.text, req.body.type);
-     researcOutput.save(); //saves the research output
+     researchOutput.save(); //saves the research output
      resp.end('success');
   }
   //returns a research output given an id
