@@ -1,5 +1,6 @@
 //imports
 import { ResearchOutputController } from './controllers/researchOutputController';
+import { UserController } from './controllers/userController';
 //other required modules
 const express = require('express'); //for converting circular objects to json
 const cors = require('cors'); //cross-site orign
@@ -33,7 +34,9 @@ app.get('/detailed_view/:id',
 app.post('/outputs', jsonParser, (req, resp) => {
   ResearchOutputController.saveResearchOutput(req, resp);
 });
-
+app.get('/get-users', (req, resp) => {
+  UserController.getUsers(req, resp);
+});
 //start the server on port 3000
 app.listen(3000, () => {
   console.log('server started: listening at port:3000');
