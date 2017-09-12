@@ -9,9 +9,9 @@ class DBcon {
   constructor() {
     this.con = mysql.createConnection({
       host: 'localhost',
-      user: 'root', //change to your username
-      password: '', //your password
-      database: 'cb' //your database name
+      user: 'ntuthuko', //change to your username
+      password: '68884856', //your password
+      database: 'cbib' //your database name
     });
   }
   getConnection() {
@@ -22,7 +22,7 @@ class DBcon {
     });
     return this.con;
   }
-  close_connection() {
+  closeConnection() {
     //closes the connection
     this.con.end();
   }

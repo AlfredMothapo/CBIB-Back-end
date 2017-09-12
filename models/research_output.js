@@ -52,25 +52,49 @@ export class ResearchOutputModel {
     });
   }
 
-    getProofVerified() {
-      return this.proof_verified;
-    }
-    getProofLink() {
-      return this.proof_link;
-    }
-    save() { //this function saves details of a research output.
-        const sql = 'INSERT INTO research_outputs(title, publication_year, ' +
-        'ro_type, additional_info, proof_link, proof_verified) VALUES (?, ?, ?, ?, ?, ?)';
+  getProofVerified() {
+    return this.proof_verified;
+  }
+  getProofLink() {
+    return this.proof_link;
+  }
+  save() { //this function saves details of a research output.
+      const sql = 'INSERT INTO research_outputs(title, publication_year, ' +
+      'ro_type, additional_info, proof_link, proof_verified) VALUES (?, ?, ?, ?, ?, ?)';
 
-        return new Promise(() => {
-             this.connection.query(sql, [this.title, this.publication_year, this.type,
-               this.additional_info,
-               this.proof_link, this.proof_verified],
-                (error) => {
-                if (error) {
-                  throw error;
-                }
-            });
+      return new Promise(() => {
+        this.connection.query(sql, [this.title, this.publication_year, this.type,
+        this.additional_info,
+        this.proof_link, this.proof_verified],
+          (error) => {
+          if (error) {
+            throw error;
+          }
         });
-    }
+      });
+  }
+
+  static deleteById(req) {
+    /* This method moves the data from the rese table to recycling_bin table*/
+    const queryString1 = 'INSERT INTO recycling_bin SELECT * FROM research_outputs WHERE ' +
+    'research_outputs.ro_id = ?';
+    const queryString2 = 'DELETE FROM research_outputs WHERE research_outputs.ro_id = ?';
+
+    return new Promise(() => {
+      const dbCon = new DBcon();
+      const connection = dbCon.getConnection();
+      // Copying the data from the research outputs table to the recycling_bin table
+      connection.query(queryString1, [req.params.id, req.params.id], (err) => {
+          if (err) {
+            throw (err);
+          }
+      });
+      //Deleting data from the research_outputs table
+      connection.query(queryString2, [req.params.id], (err) => {
+          if (err) {
+            throw (err);
+          }
+      });
+   });
+  }
 }
