@@ -26,4 +26,9 @@ export class ResearchOutputController {
       resp.end(stringify(fields, null, 1)); //returns the research output as json
     });
   }
+
+  static deleteById(req, resp) {
+    ResearchOutputModel.deleteById(req);
+    resp.end('success');
+  }
 }

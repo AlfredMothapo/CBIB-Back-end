@@ -37,9 +37,17 @@ app.get('/detailed_view/:id', (req, resp) => {
 app.post('/outputs', jsonParser, (req, resp) => {
   _researchOutputController.ResearchOutputController.saveResearchOutput(req, resp);
 });
+
+// 4. Delete a research output by id.
+app.get('/delete_research/:id', (req, resp) => {
+  _researchOutputController.ResearchOutputController.deleteById(req, resp);
+});
+
+
 app.get('/get-users', (req, resp) => {
   _userController.UserController.getUsers(req, resp);
 });
+
 //start the server on port 3000
 app.listen(3000, () => {
   console.log('server started: listening at port:3000');

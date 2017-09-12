@@ -34,6 +34,12 @@ app.get('/detailed_view/:id',
 app.post('/outputs', jsonParser, (req, resp) => {
   ResearchOutputController.saveResearchOutput(req, resp);
 });
+
+// 4. Delete a research output by id.
+app.get('/delete_research/:id',
+(req, resp) => {
+  ResearchOutputController.deleteById(req, resp);
+});
 app.get('/get-users', (req, resp) => {
   UserController.getUsers(req, resp);
 });
