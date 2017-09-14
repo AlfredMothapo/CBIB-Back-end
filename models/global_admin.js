@@ -6,7 +6,7 @@ export class GlobalAdmin extends UserModel {
     this.role = 1;
   }
   createNode() {
-    console.log('Hello');
+    
   }
   static createMember() {
 
@@ -15,6 +15,3 @@ export class GlobalAdmin extends UserModel {
 
   }
 }
-
-const ad = new GlobalAdmin('alfred', 'mothapo', '1234', 'dsds', 'we', 'eww');
-ad.createNode();
