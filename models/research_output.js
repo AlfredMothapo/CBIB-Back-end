@@ -17,7 +17,7 @@ export class ResearchOutputModel {
     static getBasic() {
       const dbCon = new DBcon();
       const connection = dbCon.getConnection();
-      const sql = 'select research_outputs.ro_id as id,title,type,publication_year,pdf_link' +
+      const sql = 'select research_outputs.ro_id as id,title,type,publication_year,pdf_link,' +
       'abstract as additional_info,first_name as Author_First_Name ' +
       ', last_name as Author_Last_Name from users INNER JOIN authors ON ' +
       'users.user_id = authors.author_id INNER JOIN research_outputs ON ' +
@@ -33,7 +33,7 @@ export class ResearchOutputModel {
     //get basic researh outputs by id.
     static getBasicById(req) {
       // let researchDetails = null;
-      const queryString = 'select research_outputs.ro_id as id,pdf_link ' +
+      const queryString = 'select research_outputs.ro_id as id,pdf_link, ' +
       'title, type, publication_year,abstract as additional_info, ' +
       'proof_link, research_types.type as type, users.first_name AS Author_First_Name, ' +
       'users.last_name AS Author_Last_Name from research_outputs  ' +
