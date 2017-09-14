@@ -1,9 +1,12 @@
-import { User } from './user';
+import { UserModel } from './user';
 
-export class GlobalAdmin extends User {
-
-  static createNode() {
-
+export class GlobalAdmin extends UserModel {
+  constructor(fName, lName, email, accesID, pass, verToken) {
+    super(fName, lName, email, accesID, pass, verToken);
+    this.role = 1;
+  }
+  createNode() {
+    console.log('Hello');
   }
   static createMember() {
 
@@ -12,3 +15,6 @@ export class GlobalAdmin extends User {
 
   }
 }
+
+const ad = new GlobalAdmin('alfred', 'mothapo', '1234', 'dsds', 'we', 'eww');
+ad.createNode();
