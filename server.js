@@ -1,6 +1,7 @@
 //imports
 import { ResearchOutputController } from './controllers/researchOutputController';
 import { UserController } from './controllers/userController';
+import { LoginController } from './controllers/loginController';
 //other required modules
 const express = require('express'); //for converting circular objects to json
 const cors = require('cors'); //cross-site orign
@@ -42,6 +43,9 @@ app.get('/delete_research/:id',
 });
 app.get('/get-users', (req, resp) => {
   UserController.getUsers(req, resp);
+});
+app.post('/login', jsonParser, (req, resp) => {
+  LoginController.loginUser(req, resp);
 });
 //start the server on port 3000
 app.listen(3000, () => {

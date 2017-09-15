@@ -4,9 +4,11 @@ var _researchOutputController = require('./controllers/researchOutputController'
 
 var _userController = require('./controllers/userController');
 
+var _loginController = require('./controllers/loginController');
+
 //other required modules
-//imports
 const express = require('express'); //for converting circular objects to json
+//imports
 const cors = require('cors'); //cross-site orign
 const bodyParser = require('body-parser');
 
@@ -44,6 +46,9 @@ app.get('/delete_research/:id', (req, resp) => {
 });
 app.get('/get-users', (req, resp) => {
   _userController.UserController.getUsers(req, resp);
+});
+app.post('/login', jsonParser, (req, resp) => {
+  _loginController.LoginController.loginUser(req, resp);
 });
 //start the server on port 3000
 app.listen(3000, () => {
