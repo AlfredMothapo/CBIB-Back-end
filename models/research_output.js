@@ -17,8 +17,8 @@ export class ResearchOutputModel {
     static getBasic() {
       const dbCon = new DBcon();
       const connection = dbCon.getConnection();
-      const sql = 'select research_outputs.ro_id as id,title,type,publication_year,pdf_link,' +
-      'abstract as additional_info,first_name as Author_First_Name ' +
+      const sql = 'select research_outputs.ro_id as id, title, type, publication_year, pdf_link,' +
+      'abstract as additional_info, first_name as Author_First_Name ' +
       ', last_name as Author_Last_Name from users INNER JOIN authors ON ' +
       'users.user_id = authors.author_id INNER JOIN research_outputs ON ' +
       ' research_outputs.ro_id=authors.ro_id ' +
@@ -33,13 +33,33 @@ export class ResearchOutputModel {
     //get basic researh outputs by id.
     static getBasicById(req) {
       // let researchDetails = null;
-      const queryString = 'select research_outputs.ro_id as id,pdf_link, ' +
+      /*const queryString = 'select research_outputs.ro_id as id,pdf_link, ' +
       'title, type, publication_year,abstract as additional_info, ' +
       'proof_link, research_types.type as type, users.first_name AS Author_First_Name, ' +
       'users.last_name AS Author_Last_Name from research_outputs  ' +
           'JOIN research_types ON ro_type = type_id ' +
           'JOIN authors ON authors.ro_id = research_outputs.ro_id JOIN users ON ' +
-          'users.user_id = authors.author_id WHERE research_outputs.ro_id = ?';
+          'users.user_id = authors.author_id WHERE research_outputs.ro_id = ?';*/
+
+      const queryString = 'SELECT  ' +
+        '`research_outputs`.`ro_id` AS `id`,  ' +
+        '`research_outputs`.`pdf_link`,  ' +
+        '`research_outputs`.`title`, ' +
+        '`research_outputs`.`ro_type`, ' +
+        '`research_outputs`.`publication_year`, ' +
+        '`research_outputs`.`abstract` AS `additional_info`, ' +
+        '`research_outputs`.`proof_link`, ' +
+        '`research_types`.`type` AS `type`, ' +
+        'GROUP_CONCAT(CONCAT(`users`.`first_name`, " ", `users`.`last_name`) SEPARATOR ", ") ' +
+        '`Authors`' +
+          'FROM `research_outputs`' +
+            'INNER JOIN `research_types` ' +
+            'ON `research_outputs`.`ro_type` = `research_types`.`type_id`' +
+              'INNER JOIN `authors` ON `authors`.`ro_id` = `research_outputs`.`ro_id`' +
+                'INNER JOIN `users` ON `users`.`user_id` = `authors`.`author_id` ' +
+                  'WHERE `research_outputs`.`ro_id` = 7 ' +
+                    'GROUP BY `research_outputs`.`ro_id`';
+
       return new Promise((resolve, reject) => {
         const dbCon = new DBcon();
         const connection = dbCon.getConnection();
