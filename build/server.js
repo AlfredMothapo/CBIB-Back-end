@@ -4,6 +4,10 @@ var _researchOutputController = require('./controllers/researchOutputController'
 
 var _userController = require('./controllers/userController');
 
+var _loginController = require('./controllers/loginController');
+
+var _nodeController = require('./controllers/nodeController');
+
 //other required modules
 //imports
 const express = require('express'); //for converting circular objects to json
@@ -42,8 +46,16 @@ app.post('/outputs', jsonParser, (req, resp) => {
 app.get('/delete_research/:id', (req, resp) => {
   _researchOutputController.ResearchOutputController.deleteById(req, resp);
 });
+// 5. get all users
 app.get('/get-users', (req, resp) => {
   _userController.UserController.getUsers(req, resp);
+});
+// 6. login
+app.post('/login', jsonParser, (req, resp) => {
+  _loginController.LoginController.loginUser(req, resp);
+});
+app.post('/create-node', jsonParser, (req, resp) => {
+  _nodeController.NodeController.saveNode(req, resp);
 });
 //start the server on port 3000
 app.listen(3000, () => {
