@@ -45,11 +45,11 @@ export class ResearchOutputModel {
         '`research_outputs`.`ro_id` AS `id`,  ' +
         '`research_outputs`.`pdf_link`,  ' +
         '`research_outputs`.`title`, ' +
-        '`research_outputs`.`ro_type`, ' +
+        /*'`research_outputs`.`ro_type`, ' +*/
         '`research_outputs`.`publication_year`, ' +
         '`research_outputs`.`abstract` AS `additional_info`, ' +
         '`research_outputs`.`proof_link`, ' +
-        '`research_types`.`type` AS `journal`, ' +
+        '`research_types`.`type` AS `type`, ' +
         'GROUP_CONCAT(CONCAT(`users`.`first_name`, " ", `users`.`last_name`) SEPARATOR ", ") ' +
         '`Authors`' +
           'FROM `research_outputs`' +
