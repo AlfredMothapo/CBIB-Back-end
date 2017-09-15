@@ -49,7 +49,7 @@ export class ResearchOutputModel {
         '`research_outputs`.`publication_year`, ' +
         '`research_outputs`.`abstract` AS `additional_info`, ' +
         '`research_outputs`.`proof_link`, ' +
-        '`research_types`.`type` AS `type`, ' +
+        '`research_types`.`type` AS `journal`, ' +
         'GROUP_CONCAT(CONCAT(`users`.`first_name`, " ", `users`.`last_name`) SEPARATOR ", ") ' +
         '`Authors`' +
           'FROM `research_outputs`' +
