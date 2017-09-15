@@ -57,7 +57,7 @@ export class ResearchOutputModel {
             'ON `research_outputs`.`ro_type` = `research_types`.`type_id`' +
               'INNER JOIN `authors` ON `authors`.`ro_id` = `research_outputs`.`ro_id`' +
                 'INNER JOIN `users` ON `users`.`user_id` = `authors`.`author_id` ' +
-                  'WHERE `research_outputs`.`ro_id` = 7 ' +
+                  'WHERE `research_outputs`.`ro_id` = ? ' +
                     'GROUP BY `research_outputs`.`ro_id`';
 
       return new Promise((resolve, reject) => {
