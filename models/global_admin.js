@@ -10,7 +10,7 @@ export class GlobalAdmin extends UserModel {
   }
   static createMember(req) {
 
-    /*const sqlQuery1 = 'SELECT * FROM users WHERE users.email = ?';
+    const sqlQuery1 = 'SELECT * FROM users WHERE users.email = ?';
     return new Promise((resolve, reject) => {
       connection.query(sqlQuery1, [req.params.email], (err, fields) => {
         if (err) {
@@ -42,7 +42,7 @@ export class GlobalAdmin extends UserModel {
           return res.send("A user with the email address already exists");
         }
       });
-    });*/
+    });
   }
 
   static createAdmin() {
