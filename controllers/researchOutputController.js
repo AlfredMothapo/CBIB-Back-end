@@ -31,4 +31,10 @@ export class ResearchOutputController {
     ResearchOutputModel.deleteById(req);
     resp.end('success');
   }
+
+  static getDetailedInformation(req, resp) {
+   ResearchOutputModel.getDetailedInformation(req).then((fields) => {
+      resp.end(stringify(fields, null, 1)); //returns the research output as json
+    });
+  }
 }
