@@ -6,11 +6,13 @@ export class GlobalAdmin extends UserModel {
     this.role = 1;
   }
   createNode() {
-    
-  }
-  static createMember() {
 
   }
+  static createMember(req) {
+
+  }
+
+
   static createAdmin() {
 
   }

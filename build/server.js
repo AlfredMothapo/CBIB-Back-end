@@ -8,9 +8,11 @@ var _loginController = require('./controllers/loginController');
 
 var _nodeController = require('./controllers/nodeController');
 
+var _globalAdminController = require('./controllers/globalAdminController');
+
 //other required modules
-//imports
 const express = require('express'); //for converting circular objects to json
+//imports
 const cors = require('cors'); //cross-site orign
 const bodyParser = require('body-parser');
 
@@ -59,6 +61,14 @@ app.post('/login', jsonParser, (req, resp) => {
 });
 app.post('/create-node', jsonParser, (req, resp) => {
   _nodeController.NodeController.saveNode(req, resp);
+});
+//7. Returns all the details of the research
+app.get('/detailed-research-outputs/:id', (req, resp) => {
+  _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
+});
+//8. Create new account
+app.get('/create-account', (req, resp) => {
+  _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
 });
 //start the server on port 3000
 app.listen(3000, () => {
