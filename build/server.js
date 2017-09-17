@@ -67,8 +67,8 @@ app.get('/detailed-research-outputs/:id', (req, resp) => {
   _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
 });
 //8. Create new account
-app.get('/create-account', (req, resp) => {
-  _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
+app.post('/create-account', (req, resp) => {
+  _globalAdminController.GlobalAdminController.createMember(req, resp);
 });
 //start the server on port 3000
 app.listen(3000, () => {
