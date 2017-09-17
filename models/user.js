@@ -14,7 +14,16 @@ export class UserModel {
   }
   //method to get access ID of a certain user
   static getUsers() {
-    const queryString = 'select user_id,email from users';
+    const queryString = 'select user_id,email,first_name,last_name from users where access_id > 0';
+    return new Promise((resolve, reject) => {
+      connection.query(queryString, (err, fields) => {
+          if (err) return reject(err);
+          resolve(fields);
+      });
+    });
+  }
+  static getAuthors() {
+    const queryString = 'select user_id,email,first_name,last_name from users';
     return new Promise((resolve, reject) => {
       connection.query(queryString, (err, fields) => {
           if (err) return reject(err);

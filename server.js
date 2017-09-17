@@ -46,6 +46,9 @@ app.get('/delete_research/:id',
 app.get('/get-users', (req, resp) => {
   UserController.getUsers(req, resp);
 });
+app.get('/get-authors', (req, resp) => {
+  UserController.getAuthors(req, resp);
+});
 // 6. login
 app.post('/login', jsonParser, (req, resp) => {
   LoginController.loginUser(req, resp);
