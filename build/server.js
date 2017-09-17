@@ -36,7 +36,7 @@ app.get('/basic-research-outputs', cors(corsOptions), (req, resp) => {
   _researchOutputController.ResearchOutputController.getBasic(req, resp);
 });
 // 2. get research_output given the id
-app.get('/detailed_view/:id', (req, resp) => {
+app.get('/basic-research-output/:id', (req, resp) => {
   _researchOutputController.ResearchOutputController.getBasicById(req, resp);
 });
 // 3. Create a new research output.
@@ -67,8 +67,8 @@ app.get('/detailed-research-outputs/:id', (req, resp) => {
   _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
 });
 //8. Create new account
-app.get('/create-account', (req, resp) => {
-  _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
+app.post('/create-account', jsonParser, (req, resp) => {
+  _globalAdminController.GlobalAdminController.createMember(req, resp);
 });
 //start the server on port 3000
 app.listen(3000, () => {

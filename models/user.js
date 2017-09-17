@@ -4,12 +4,12 @@ const con = new DBcon();
 const connection = con.getConnection();
 
 export class UserModel {
-  constructor(fName, lName, email, accesID, pass, verToken) {
+  constructor(fName, lName, email, accesID, verToken) {
     this.first_name = fName;
     this.last_name = lName;
     this.email = email;
     this.accesID = accesID;
-    this.password = pass;
+    this.password = '';
     this.verification_token = verToken;
   }
   //method to get access ID of a certain user
