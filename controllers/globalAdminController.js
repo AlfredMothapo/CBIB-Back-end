@@ -4,10 +4,9 @@ const stringify = require('json-stringify-safe');
 
 export class GlobalAdminController {
 
-  static createMember(req, resp) {
-
-    GlobalAdminModel.createMember(req.body.first_name, req.last_name, req.body.email, req.body.access_id).then(() => {
-       resp.end(stringify('Success', null, 1)); //returns the research output as json
+  static createMember(req, res) {
+    GlobalAdminModel.createMember(req.body.first_name, req.body.last_name,req.body.email,
+      req.body.access_id, req.body.node_id, res).then(() => {
     });
   }
 }
