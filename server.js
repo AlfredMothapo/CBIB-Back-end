@@ -3,7 +3,7 @@ import { ResearchOutputController } from './controllers/researchOutputController
 import { UserController } from './controllers/userController';
 import { LoginController } from './controllers/loginController';
 import { NodeController } from './controllers/nodeController';
-import { GlobalAdminController} from './controllers/globalAdminController';
+import { GlobalAdminController } from './controllers/globalAdminController';
 //other required modules
 const express = require('express'); //for converting circular objects to json
 const cors = require('cors'); //cross-site orign
@@ -58,7 +58,7 @@ app.post('/create-node', jsonParser, (req, resp) => {
   NodeController.saveNode(req, resp);
 });
 //7. Returns all the details of the research
-app.get('/detailed-research-outputs/:id',
+app.get('/detailed-research-output/:id',
 (req, resp) => {
   ResearchOutputController.getDetailedInformation(req, resp);
 });
