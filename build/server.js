@@ -10,9 +10,11 @@ var _nodeController = require('./controllers/nodeController');
 
 var _globalAdminController = require('./controllers/globalAdminController');
 
+var _recyclingBinController = require('./controllers/recyclingBinController');
+
 //other required modules
-const express = require('express'); //for converting circular objects to json
 //imports
+const express = require('express'); //for converting circular objects to json
 const cors = require('cors'); //cross-site orign
 const bodyParser = require('body-parser');
 
@@ -63,12 +65,20 @@ app.post('/create-node', jsonParser, (req, resp) => {
   _nodeController.NodeController.saveNode(req, resp);
 });
 //7. Returns all the details of the research
-app.get('/detailed-research-outputs/:id', (req, resp) => {
+app.get('/detailed-research-output/:id', (req, resp) => {
   _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
 });
 //8. Create new account
 app.post('/create-account', jsonParser, (req, resp) => {
   _globalAdminController.GlobalAdminController.createMember(req, resp);
+});
+//.9 For user to view all their researches on the recycling bin
+app.get('/user-recycling-bin/:id', (req, resp) => {
+  _recyclingBinController.RecyclingBinController.userRecyclingBin(req, resp);
+});
+// 10. retrieve a research from the bin for a research with given ro_id
+app.get('/retrieve-research/:id', (req, resp) => {
+  _recyclingBinController.RecyclingBinController.retrieveResearch(req, resp);
 });
 //start the server on port 3000
 app.listen(3000, () => {

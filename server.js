@@ -4,6 +4,7 @@ import { UserController } from './controllers/userController';
 import { LoginController } from './controllers/loginController';
 import { NodeController } from './controllers/nodeController';
 import { GlobalAdminController } from './controllers/globalAdminController';
+import { RecyclingBinController } from './controllers/recyclingBinController';
 //other required modules
 const express = require('express'); //for converting circular objects to json
 const cors = require('cors'); //cross-site orign
@@ -65,6 +66,14 @@ app.get('/detailed-research-output/:id',
 //8. Create new account
 app.post('/create-account', jsonParser, (req, resp) => {
   GlobalAdminController.createMember(req, resp);
+});
+//.9 For user to view all their researches on the recycling bin
+app.get('/user-recycling-bin/:id', (req, resp) => {
+  RecyclingBinController.userRecyclingBin(req, resp);
+});
+// 10. retrieve a research from the bin for a research with given ro_id
+app.get('/retrieve-research/:id', (req, resp) => {
+  RecyclingBinController.retrieveResearch(req, resp);
 });
 //start the server on port 3000
 app.listen(3000, () => {
