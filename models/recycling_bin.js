@@ -5,7 +5,7 @@ const connection = con.getConnection();
 
 export class RecyclingBinModel {
   // Return items for a person with a given id
-  static userRecyclingBin(id) {
+  static userRecyclingBin(userId) {
     const sqlQuery = 'SELECT recycling_bin.ro_id AS id, title, type, publication_year, ' +
     'proof_verified,proof_link,  pdf_link, abstract as additional_info, GROUP_CONCAT(CONCAT(' +
     'users.first_name, " ", users.last_name) SEPARATOR ", ") Authors FROM recycling_bin JOIN ' +
@@ -14,7 +14,7 @@ export class RecyclingBinModel {
     'authors.author_id =? GROUP BY recycling_bin.ro_id';
 
     return new Promise((resolve, reject) => {
-      connection.query(sqlQuery, [id], (err, fields) => {
+      connection.query(sqlQuery, [userId], (err, fields) => {
           if (err) {
             return reject(err);
           }
@@ -24,7 +24,7 @@ export class RecyclingBinModel {
   }
 
   //Return all the researhc in the recycling bin for an entire node
-  static nodeRecyclingBin(nodeId, resp) {
+  static nodeRecyclingBin(userId) {
     resp.end('');
   }
 
