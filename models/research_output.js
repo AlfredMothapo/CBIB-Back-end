@@ -26,7 +26,7 @@ export class ResearchOutputModel {
       return new Promise((resolve, reject) => {
         connection.query(sql, (err, fields) => {
             if (err) return reject(err);
-            resolve(fields);  //return the fields/results
+            resolve(fields); 
         });
       });
     }
@@ -82,8 +82,9 @@ export class ResearchOutputModel {
 
   static deleteById(req) {
     /* This method moves the data from the rese table to recycling_bin table*/
-    const queryString1 = 'INSERT INTO recycling_bin SELECT * FROM research_outputs WHERE ' +
-    'research_outputs.ro_id = ?';
+    const queryString1 = 'INSERT INTO recycling_bin(ro_id, title, publication_year, ' +
+    'ro_type, abstract, proof_link, proof_verified, pdf_link) SELECT * FROM research_outputs ' +
+    'WHERE research_outputs.ro_id = ?';
     const queryString2 = 'DELETE FROM research_outputs WHERE research_outputs.ro_id = ?';
 
     return new Promise(() => {
