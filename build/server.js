@@ -63,7 +63,7 @@ app.post('/create-node', jsonParser, (req, resp) => {
   _nodeController.NodeController.saveNode(req, resp);
 });
 //7. Returns all the details of the research
-app.get('/detailed-research-outputs/:id', (req, resp) => {
+app.get('/detailed-research-output/:id', (req, resp) => {
   _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
 });
 //8. Create new account

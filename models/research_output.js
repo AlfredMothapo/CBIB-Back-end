@@ -66,7 +66,7 @@ export class ResearchOutputModel {
   }
   save() { //this function saves details of a research output.
       const sql = 'INSERT INTO research_outputs(title, publication_year, ' +
-      'ro_type, additional_info, proof_link, proof_verified) VALUES (?, ?, ?, ?, ?, ?)';
+      'ro_type, abstract, proof_link, proof_verified) VALUES (?, ?, ?, ?, ?, ?)';
 
       return new Promise(() => {
         this.connection.query(sql, [this.title, this.publication_year, this.type,
@@ -128,8 +128,6 @@ export class ResearchOutputModel {
           }
           resolve(fields);
       });
-  });
-
+    });
   }
-
 }

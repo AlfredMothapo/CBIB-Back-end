@@ -1,11 +1,9 @@
 import { GlobalAdminModel } from '../models/global_admin';
 
-const stringify = require('json-stringify-safe');
-
 export class GlobalAdminController {
 
   static createMember(req, res) {
-    GlobalAdminModel.createMember(req.body.first_name, req.body.last_name,req.body.email,
+    GlobalAdminModel.createMember(req.body.first_name, req.body.last_name, req.body.email,
       req.body.access_id, req.body.node_id, res).then(() => {
     });
   }

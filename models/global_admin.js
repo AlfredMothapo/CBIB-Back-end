@@ -1,8 +1,10 @@
 import { DBcon } from '../db_connection';
 import { UserModel } from './user';
+import { emailSender } from './emailSender';
 
 const dbCon = new DBcon();
 const connection = dbCon.getConnection();
+const uuidv1 = require('uuid/v1');
 
 export class GlobalAdminModel extends UserModel {
   constructor(fName, lName, email, accesID, pass, verToken) {
@@ -13,7 +15,7 @@ export class GlobalAdminModel extends UserModel {
   createNode() {
 
   }
-  static createMember(first_name, last_name, email, access_id, node_id, res) {
+  static createMember(firstName, lastName, email, accessId, nodeId, res) {
     const sqlQuery1 = 'SELECT * FROM users WHERE users.email = ?';
     return new Promise((resolve, reject) => {
       //Checks if the given email exists within the database
@@ -24,33 +26,30 @@ export class GlobalAdminModel extends UserModel {
         //If something was found on the database, insert
         if (!fields.length) {
           //generate a random token for a user
-          const uuidv1 = require('uuid/v1');
-          const verification_token = uuidv1();
-
+          const verificationToken = uuidv1();
+          //For adding into the users table
           const sqlQuery2 = 'INSERT INTO users(first_name, last_name, email,' +
           'verification_token, verified_status, access_id) VALUES (?, ?, ?, ?, ?, ?)';
           //now insert into the membership table
-          const sqlQuery3 = 'INSERT INTO membership(node_id, user_id) VALUES ((SELECT user_id FROM users WHERE email = ?), ?)';
+          const sqlQuery3 = 'INSERT INTO membership(node_id, user_id) VALUES ((SELECT' +
+          ' user_id FROM users WHERE email = ?), ?)';
 
-          connection.query(sqlQuery2, [first_name, last_name, email,
-            verification_token, 0, access_id], (err) => {
+          connection.query(sqlQuery2, [firstName, lastName, email,
+            verificationToken, 0, accessId], (err2) => {
               if (err) {
-                throw (err);
-                return reject(err);
+                throw (err2);
               }
           });
-
-          connection.query(sqlQuery3, [email, node_id], (err) => {
+          connection.query(sqlQuery3, [email, nodeId], (err3) => {
               if (err) {
-                throw (err);
-                return reject(eer);
+                throw (err3);
               }
           });
-          res.end("success")
-        }
-        //If nothing was found on the db, give error message
-        else {
-          return res.end("A user with the email address already exists");
+          emailSender.createEmail(email, verificationToken, firstName);
+          res.end('success');
+       //}
+        } else { //If nothing was found on the db, give error message
+          return res.end('A user with the email address already exists');
         }
       });
     });
