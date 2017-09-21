@@ -6,9 +6,13 @@ const connection = con.getConnection();
 export class RecyclingBinModel {
   // Return items for a person with a given id
   static userRecyclingBin(id) {
-    //need to change sql statement
-    const sqlQuery = 'SELECT * FROM recycling_bin JOIN authors ON ' +
-    'authors.ro_id = recycling_bin.ro_id WHERE authors.author_id =?';
+    const sqlQuery = 'SELECT recycling_bin.ro_id AS id, title, type, publication_year, ' +
+    'proof_verified,proof_link,  pdf_link, abstract as additional_info, GROUP_CONCAT(CONCAT(' +
+    'users.first_name, " ", users.last_name) SEPARATOR ", ") Authors FROM recycling_bin JOIN ' +
+    'authors ON authors.ro_id = recycling_bin.ro_id JOIN research_types ON recycling_bin.ro_type ' +
+    '= research_types.type_id JOIN users ON users.user_id = authors.author_id WHERE ' +
+    'authors.author_id =? GROUP BY recycling_bin.ro_id';
+
     return new Promise((resolve, reject) => {
       connection.query(sqlQuery, [id], (err, fields) => {
           if (err) {
