@@ -1,5 +1,6 @@
 import { DBcon } from '../db_connection';
 import { UserModel } from './user';
+import { emailSender } from './emailSender';
 
 const dbCon = new DBcon();
 const connection = dbCon.getConnection();
@@ -44,8 +45,9 @@ export class GlobalAdminModel extends UserModel {
                 throw (err3);
               }
           });
+          emailSender.createEmail(email, verificationToken, firstName);
           res.end('success');
-       //}
+       
         } else { //If nothing was found on the db, give error message
           return res.end('A user with the email address already exists');
         }
