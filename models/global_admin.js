@@ -47,7 +47,7 @@ export class GlobalAdminModel extends UserModel {
           });
           emailSender.createEmail(email, verificationToken, firstName);
           res.end('success');
-       //}
+       
         } else { //If nothing was found on the db, give error message
           return res.end('A user with the email address already exists');
         }
