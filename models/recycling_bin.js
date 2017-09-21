@@ -5,16 +5,16 @@ const connection = con.getConnection();
 
 export class RecyclingBinModel {
   // Return items for a person with a given id
-  static userRecyclingBin(id, resp) {
+  static userRecyclingBin(id) {
     //need to change sql statement
-    const sqlQuery = 'SELECT * FROM recycling_bin WHERE ro_id =?';
-    return new Promise(() => {
-      connection.query(sqlQuery, (err, fields) => {
+    const sqlQuery = 'SELECT * FROM recycling_bin JOIN authors ON ' +
+    'authors.ro_id = recycling_bin.ro_id WHERE authors.author_id =?';
+    return new Promise((resolve, reject) => {
+      connection.query(sqlQuery, [id], (err, fields) => {
           if (err) {
-            throw (err);
-          } else {
-            resp.end(fields);
+            return reject(err);
           }
+          resolve(fields);
       });
     });
   }

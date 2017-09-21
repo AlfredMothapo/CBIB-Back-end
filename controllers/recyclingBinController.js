@@ -1,10 +1,12 @@
 import { RecyclingBinModel } from '../models/recycling_bin';
 
-//const stringify = require('json-stringify-safe');
+const stringify = require('json-stringify-safe');
 
 export class RecyclingBinController {
   static userRecyclingBin(req, resp) {
-    RecyclingBinModel.userRecyclingBin(req.params.id, resp);
+    RecyclingBinModel.userRecyclingBin(req.params.id).then((fields) => {
+      resp.end(stringify(fields, null, 1)); //returns the research output as json
+    });
   }
 
   static nodeRecyclingBin(req, resp) {
