@@ -15,7 +15,7 @@ export class UserModel {
   //method to get access ID of a certain user
   static getUsers() {
     const queryString = 'SELECT email, user_id ' +
-    ',CONCAT(first_name, " ", last_name) AS usernames ' +
+    ',CONCAT(first_name, " ", last_name) AS author ' +
      'from users where access_id > 0';
     return new Promise((resolve, reject) => {
       connection.query(queryString, (err, fields) => {
@@ -26,7 +26,7 @@ export class UserModel {
   }
   static getAuthors() {
     const queryString = 'select user_id,email,' +
-    'CONCAT(first_name, " ", last_name) AS usernames ' +
+    'CONCAT(first_name, " ", last_name) AS author ' +
     'from users';
     return new Promise((resolve, reject) => {
       connection.query(queryString, (err, fields) => {
