@@ -17,16 +17,22 @@ export class ResearchOutputModel {
     static getBasic() {
       const dbCon = new DBcon();
       const connection = dbCon.getConnection();
-      const sql = 'select research_outputs.ro_id as id, title, type, publication_year, pdf_link,' +
-      'abstract as additional_info, first_name as Author_First_Name ' +
-      ', last_name as Author_Last_Name from users INNER JOIN authors ON ' +
-      'users.user_id = authors.author_id INNER JOIN research_outputs ON ' +
-      ' research_outputs.ro_id=authors.ro_id ' +
-          'INNER JOIN research_types ON  research_outputs.ro_type  = research_types.type_id';
+      const sql = 'SELECT  ' +
+      '`research_outputs`.`ro_id` AS `id`, `research_outputs`.`title`, ' +
+      '`research_types`.`type`, `research_outputs`.`publication_year`, ' +
+      '`research_outputs`.`abstract` AS `additional_info`, ' +
+      'GROUP_CONCAT(CONCAT(`users`.`first_name`, " ", `users`.`last_name`) ' +
+      ' SEPARATOR ", ") `Authors` FROM `research_outputs` INNER JOIN' +
+      '`research_types` ON `research_outputs`.`ro_type` = ' +
+      '`research_types`.`type_id` INNER JOIN `authors` ON `authors`.`ro_id` = ' +
+      '`research_outputs`.`ro_id` INNER JOIN `users` ON `users`.`user_id` = ' +
+      '`authors`.`author_id` ' +
+      'GROUP BY `research_outputs`.`ro_id`';
       return new Promise((resolve, reject) => {
         connection.query(sql, (err, fields) => {
             if (err) return reject(err);
             resolve(fields);
+
         });
       });
     }
@@ -82,9 +88,8 @@ export class ResearchOutputModel {
 
   static deleteById(req) {
     /* This method moves the data from the rese table to recycling_bin table*/
-    const queryString1 = 'INSERT INTO recycling_bin(ro_id, title, publication_year, ' +
-    'ro_type, abstract, proof_link, proof_verified, pdf_link) SELECT * FROM research_outputs ' +
-    'WHERE research_outputs.ro_id = ?';
+    const queryString1 = 'INSERT INTO recycling_bin SELECT * FROM research_outputs WHERE ' +
+    'research_outputs.ro_id = ?';
     const queryString2 = 'DELETE FROM research_outputs WHERE research_outputs.ro_id = ?';
 
     return new Promise(() => {
