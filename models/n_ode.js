@@ -4,7 +4,6 @@ const con = new DBcon();
 const connection = con.getConnection();
 
 export class NodeModel {
-
   static createNode(nodeName, nodeDescription) {
     const sqlQuery = 'INSERT INTO nodes (node_name, about_node)' +
     ' values (?,?)';

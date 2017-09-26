@@ -31,7 +31,8 @@ export class ResearchOutputModel {
       return new Promise((resolve, reject) => {
         connection.query(sql, (err, fields) => {
             if (err) return reject(err);
-            resolve(fields);  //return the fields/results
+            resolve(fields);
+
         });
       });
     }
@@ -113,7 +114,7 @@ export class ResearchOutputModel {
   static getDetailedInformation(req) {
     const queryString = 'SELECT  ' +
     '`research_outputs`.`ro_id` AS `id`, `research_outputs`.`title`, ' +
-    '`research_types`.`type`, `research_outputs`.`publication_year`, ' +
+    '`research_outputs`.`type`, `research_outputs`.`publication_year`, ' +
     '`research_outputs`.`abstract` AS `additional_info`, `research_outputs`.`pdf_link`, ' +
     '`research_outputs`.`proof_verified`, `research_outputs`.`proof_link`, ' +
     'GROUP_CONCAT(CONCAT(`users`.`first_name`, " ", `users`.`last_name`) ' +
