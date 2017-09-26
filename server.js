@@ -71,7 +71,7 @@ app.post('/create-account', jsonParser, (req, resp) => {
 app.get('/user-recycling-bin/:id', (req, resp) => {
   RecyclingBinController.userRecyclingBin(req, resp);
 });
-// 10. retrieve a research from the bin for a research with given ro_id
+//10. retrieve a research from the bin for a research with given ro_id
 app.get('/retrieve-research/:id', (req, resp) => {
   RecyclingBinController.retrieveResearch(req, resp);
 });
