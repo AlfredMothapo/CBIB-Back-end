@@ -75,7 +75,29 @@ app.get('/user-recycling-bin/:id', (req, resp) => {
 app.get('/retrieve-research/:id', (req, resp) => {
   RecyclingBinController.retrieveResearch(req, resp);
 });
-app.delete('/')
+app.delete('/delete-permanently/:id', jsonParser, (req, resp) => {
+  RecyclingBinController.deletePermanently(req, resp);
+});
+//12. edit an existing ro
+app.put('/edit-research-output', jsonParser, (req, resp) => {
+  ResearchOutputController.editResearchOutput(req, resp);
+});
+//13. Add an author to an existing research
+app.post('/add-author', jsonParser, (req, resp) => {
+  ResearchOutputController.addAuthor(req, resp);
+});
+//14. Remove an author from a research
+app.delete('/remove-author', jsonParser, (req, resp) => {
+  ResearchOutputController.removeAuthor(req, resp);
+});
+//15. For a user to view their account details
+app.get('/account-details/:id', (req, resp) => {
+  UserController.accountDetails(req, resp);
+});
+// edit account details
+app.put('/edit-account', jsonParser, (req, resp) => {
+  UserController.editAccount(req, resp);
+});
 //start the server on port 3000
 app.listen(3000, () => {
   console.log('server started: listening at port:3000');
