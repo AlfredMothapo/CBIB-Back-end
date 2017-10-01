@@ -1,5 +1,8 @@
 import { DBcon } from '../db_connection';
-//
+
+const dbCon = new DBcon();
+const connection = dbCon.getConnection();
+
 export class ResearchOutputModel {
     constructor(title, pubYear, addInfo, type, firstName, lastName) {
         this.title = title;
@@ -15,8 +18,6 @@ export class ResearchOutputModel {
     }
     //get basic research outputs.
     static getBasic() {
-      const dbCon = new DBcon();
-      const connection = dbCon.getConnection();
       const sql = 'SELECT  ' +
       '`research_outputs`.`ro_id` AS `id`, `research_outputs`.`title`, ' +
       '`research_types`.`type`, `research_outputs`.`publication_year`, ' +
@@ -32,12 +33,11 @@ export class ResearchOutputModel {
         connection.query(sql, (err, fields) => {
             if (err) return reject(err);
             resolve(fields);
-
         });
       });
     }
     //get basic researh outputs by id.
-    static getBasicById(req) {
+    static getBasicById(roId) {
       const queryString = 'SELECT  ' +
       '`research_outputs`.`ro_id` AS `id`, `research_outputs`.`pdf_link`, ' +
       '`research_outputs`.`title`, `research_outputs`.`publication_year`, ' +
@@ -53,9 +53,7 @@ export class ResearchOutputModel {
       '`research_outputs`.`ro_id`';
 
       return new Promise((resolve, reject) => {
-        const dbCon = new DBcon();
-        const connection = dbCon.getConnection();
-        connection.query(queryString, [req.params.id], (err, fields) => {
+        connection.query(queryString, [roId], (err, fields) => {
             if (err) {
               return reject(err);
             }
@@ -86,23 +84,21 @@ export class ResearchOutputModel {
       });
   }
 
-  static deleteById(req) {
+  static deleteById(roId) {
     /* This method moves the data from the rese table to recycling_bin table*/
     const queryString1 = 'INSERT INTO recycling_bin SELECT * FROM research_outputs WHERE ' +
     'research_outputs.ro_id = ?';
     const queryString2 = 'DELETE FROM research_outputs WHERE research_outputs.ro_id = ?';
 
     return new Promise(() => {
-      const dbCon = new DBcon();
-      const connection = dbCon.getConnection();
       // Copying the data from the research outputs table to the recycling_bin table
-      connection.query(queryString1, [req.params.id, req.params.id], (err) => {
+      connection.query(queryString1, [roId, roId], (err) => {
           if (err) {
             throw (err);
           }
       });
       //Deleting data from the research_outputs table
-      connection.query(queryString2, [req.params.id], (err) => {
+      connection.query(queryString2, [roId], (err) => {
           if (err) {
             throw (err);
           }
@@ -111,10 +107,10 @@ export class ResearchOutputModel {
   }
 
   // returns detailed information of a research with given id
-  static getDetailedInformation(req) {
+  static getDetailedInformation(roId) {
     const queryString = 'SELECT  ' +
     '`research_outputs`.`ro_id` AS `id`, `research_outputs`.`title`, ' +
-    '`research_outputs`.`type`, `research_outputs`.`publication_year`, ' +
+    '`research_outputs`.`ro_type`, `research_outputs`.`publication_year`, ' +
     '`research_outputs`.`abstract` AS `additional_info`, `research_outputs`.`pdf_link`, ' +
     '`research_outputs`.`proof_verified`, `research_outputs`.`proof_link`, ' +
     'GROUP_CONCAT(CONCAT(`users`.`first_name`, " ", `users`.`last_name`) ' +
@@ -126,14 +122,54 @@ export class ResearchOutputModel {
     'GROUP BY `research_outputs`.`ro_id`';
 
     return new Promise((resolve, reject) => {
-      const dbCon = new DBcon();
-      const connection = dbCon.getConnection();
-      connection.query(queryString, [req.params.id], (err, fields) => {
+      connection.query(queryString, [roId], (err, fields) => {
           if (err) {
             return reject(err);
           }
           resolve(fields);
       });
+    });
+  }
+  // To edit a research_outputs
+  static editResearchOutput(roId, title, typeId, publicationYear,
+    abstract, pdfLink, proofVerified, proofLink) {
+    const queryString = 'UPDATE research_outputs SET title = ?, type_id = ?, ' +
+    'publication_year = ?, abstract = ?, pdf_link = ?, proof_verified =?, ' +
+    'proof_link = ? WHERE ro_id = ?';
+    return new Promise((resolve, reject) => {
+      connection.query(queryString, [title, typeId, publicationYear, abstract, pdfLink,
+        proofVerified, proofLink, roId], (err) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(this.getDetailedInformation(roId));
+      });
+    });
+  }
+
+  static addAuthor(authorId, roId) {
+    const queryString1 = 'INSERT INTO authors(author_id, ro_id) VALUES(?,?)';
+    return new Promise((resolve, reject) => {
+      connection.query(queryString1, [authorId, roId], (err) => {
+          if (err) {
+            return reject(err);
+          }
+          // call the other method to display the up to date info
+          resolve(this.getDetailedInformation(roId));
+      });
+    });
+  }
+
+  static removeAuthor(authorId, roId) {
+    const queryString1 = 'DELETE FROM authors WHERE author_id = ? AND ro_id = ?';
+    return new Promise((resolve, reject) => {
+      connection.query(queryString1, [authorId, roId], (err) => {
+          if (err) {
+            return reject(err);
+          }
+      });
+      // call the other method to display the up to date info
+      resolve(this.getDetailedInformation(roId));
     });
   }
 }

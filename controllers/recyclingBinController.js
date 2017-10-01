@@ -9,12 +9,6 @@ export class RecyclingBinController {
     });
   }
 
-  static nodeRecyclingBin(req, resp) {
-    RecyclingBinModel.nodeRecyclingBin(req.params.id).then((fields) => {
-      resp.end(stringify(fields, null, 1));
-    });
-  }
-
   static deletePermanently(req, resp) {
     RecyclingBinModel.deletePermanently(req.params.id, resp);
   }

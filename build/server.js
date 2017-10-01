@@ -76,13 +76,32 @@ app.post('/create-account', jsonParser, (req, resp) => {
 app.get('/user-recycling-bin/:id', (req, resp) => {
   _recyclingBinController.RecyclingBinController.userRecyclingBin(req, resp);
 });
-//10. For node admin to view all research in bin for their node
-app.get('/node-recycling-bin/:id', (req, resp) => {
-  _recyclingBinController.RecyclingBinController.nodeRecyclingBin(req, resp);
-});
-// 11. retrieve a research from the bin for a research with given ro_id
+//10. retrieve a research from the bin for a research with given ro_id
 app.get('/retrieve-research/:id', (req, resp) => {
   _recyclingBinController.RecyclingBinController.retrieveResearch(req, resp);
+});
+app.delete('/delete-permanently/:id', jsonParser, (req, resp) => {
+  _recyclingBinController.RecyclingBinController.deletePermanently(req, resp);
+});
+//12. edit an existing ro
+app.put('/edit-research-output', jsonParser, (req, resp) => {
+  _researchOutputController.ResearchOutputController.editResearchOutput(req, resp);
+});
+//13. Add an author to an existing research
+app.post('/add-author', jsonParser, (req, resp) => {
+  _researchOutputController.ResearchOutputController.addAuthor(req, resp);
+});
+//14. Remove an author from a research
+app.delete('/remove-author', jsonParser, (req, resp) => {
+  _researchOutputController.ResearchOutputController.removeAuthor(req, resp);
+});
+//15. For a user to view their account details
+app.get('/account-details/:id', (req, resp) => {
+  _userController.UserController.accountDetails(req, resp);
+});
+// edit account details
+app.put('/edit-account', jsonParser, (req, resp) => {
+  _userController.UserController.editAccount(req, resp);
 });
 //start the server on port 3000
 app.listen(3000, () => {

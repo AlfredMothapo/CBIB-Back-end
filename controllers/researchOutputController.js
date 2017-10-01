@@ -22,18 +22,38 @@ export class ResearchOutputController {
   }
   //returns a research output given an id
   static getBasicById(req, resp) {
-   ResearchOutputModel.getBasicById(req).then((fields) => {
+   ResearchOutputModel.getBasicById(req.params.id).then((fields) => {
       resp.end(stringify(fields, null, 1)); //returns the research output as json
     });
   }
 
   static deleteById(req, resp) {
-    ResearchOutputModel.deleteById(req);
+    ResearchOutputModel.deleteById(req.params.id);
     resp.end('success');
   }
 
   static getDetailedInformation(req, resp) {
-   ResearchOutputModel.getDetailedInformation(req).then((fields) => {
+   ResearchOutputModel.getDetailedInformation(req.params.id).then((fields) => {
+      resp.end(stringify(fields, null, 1)); //returns the research output as json
+    });
+  }
+
+  static editResearchOutput(req, resp) {
+    ResearchOutputModel.editResearchOutput(req.body.ro_id, req.body.title, req.body.type_id,
+       req.body.publication_year, req.body.additional_info, req.body.pdf_link,
+       req.body.proof_verified, req.body.proof_link).then((fields) => {
+         resp.end(stringify(fields, null, 1)); //returns the research output as json
+     });
+  }
+
+  static addAuthor(req, resp) {
+    ResearchOutputModel.addAuthor(req.body.author_id, req.body.ro_id).then((fields) => {
+      resp.end(stringify(fields, null, 1)); //returns the research output as json
+    });
+  }
+
+  static removeAuthor(req, resp) {
+    ResearchOutputModel.removeAuthor(req.body.author_id, req.body.ro_id).then((fields) => {
       resp.end(stringify(fields, null, 1)); //returns the research output as json
     });
   }
