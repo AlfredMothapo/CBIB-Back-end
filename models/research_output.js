@@ -1,16 +1,19 @@
 import { DBcon } from '../db_connection';
 //
 export class ResearchOutputModel {
-    constructor(title, pubYear, addInfo, type, firstName, lastName) {
+    constructor(title, pubYear, addInfo, text, type, author, coauthors,
+    prooflink, proofver) {
         this.title = title;
+        this.text = text;
         this.publication_year = pubYear;
         this.additional_info = addInfo;
         this.type = type; //Hardcoded here need to be int from Drop down values in front-end
         this.db_con = new DBcon();
-        this.proof_verified = 0;
-        this.proof_link = 'www';
-        this.first_name = firstName;
-        this.last_name = lastName;
+        this.proof_verified = proofver;
+        this.proof_link = prooflink;
+        this.author = author;
+        this.pdf_link = 'Hello world';
+        this.coauthors = coauthors;
         this.connection = this.db_con.getConnection(); //db connection
     }
     //get basic research outputs.
@@ -31,8 +34,7 @@ export class ResearchOutputModel {
       return new Promise((resolve, reject) => {
         connection.query(sql, (err, fields) => {
             if (err) return reject(err);
-            resolve(fields);
-
+            resolve(fields);  //return the fields/results
         });
       });
     }
@@ -71,18 +73,31 @@ export class ResearchOutputModel {
     return this.proof_link;
   }
   save() { //this function saves details of a research output.
-      const sql = 'INSERT INTO research_outputs(title, publication_year, ' +
-      'ro_type, abstract, proof_link, proof_verified) VALUES (?, ?, ?, ?, ?, ?)';
-
+      const sql = 'INSERT INTO research_outputs(title, text, publication_year, ' +
+      'ro_type, abstract, proof_link, proof_verified, pdf_link) VALUES (?,?, ?,?, ?, ?, ?, ?)';
+      const sql2 = 'Insert INTO authors (author_id,ro_id) VALUES' +
+      '(?,(SELECT ro_id FROM research_outputs WHERE title=?))';
       return new Promise(() => {
-        this.connection.query(sql, [this.title, this.publication_year, this.type,
+        this.connection.query(sql, [this.title, this.text, this.publication_year, this.type,
         this.additional_info,
-        this.proof_link, this.proof_verified],
+        this.proof_link, this.proof_verified, this.pdf_link],
           (error) => {
           if (error) {
             throw error;
           }
         });
+        this.connection.query(sql2, [this.author, this.title], (error) => {
+          if (error) {
+            throw error;
+          }
+        });
+        for (let i = 0; i < this.coauthors.length; i++) {
+          this.connection.query(sql2, [this.coauthors[i], this.title], (error) => {
+            if (error) {
+              throw error;
+            }
+          });
+        }
       });
   }
 
@@ -114,7 +129,7 @@ export class ResearchOutputModel {
   static getDetailedInformation(req) {
     const queryString = 'SELECT  ' +
     '`research_outputs`.`ro_id` AS `id`, `research_outputs`.`title`, ' +
-    '`research_outputs`.`type`, `research_outputs`.`publication_year`, ' +
+    '`research_types`.`type`, `research_outputs`.`publication_year`, ' +
     '`research_outputs`.`abstract` AS `additional_info`, `research_outputs`.`pdf_link`, ' +
     '`research_outputs`.`proof_verified`, `research_outputs`.`proof_link`, ' +
     'GROUP_CONCAT(CONCAT(`users`.`first_name`, " ", `users`.`last_name`) ' +

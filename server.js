@@ -71,11 +71,10 @@ app.post('/create-account', jsonParser, (req, resp) => {
 app.get('/user-recycling-bin/:id', (req, resp) => {
   RecyclingBinController.userRecyclingBin(req, resp);
 });
-//10. retrieve a research from the bin for a research with given ro_id
+// 10. retrieve a research from the bin for a research with given ro_id
 app.get('/retrieve-research/:id', (req, resp) => {
   RecyclingBinController.retrieveResearch(req, resp);
 });
-app.delete('/')
 //start the server on port 3000
 app.listen(3000, () => {
   console.log('server started: listening at port:3000');
