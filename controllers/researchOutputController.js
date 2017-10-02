@@ -38,6 +38,11 @@ export class ResearchOutputController {
       resp.end(stringify(fields, null, 1)); //returns the research output as json
     });
   }
+  static getDetailed(req, resp) {
+   ResearchOutputModel.getDetailed().then((fields) => {
+      resp.end(stringify(fields, null, 1)); //returns the research output as json
+    });
+  }
 
   static editResearchOutput(req, resp) {
     ResearchOutputModel.editResearchOutput(req.body.ro_id, req.body.title, req.body.type_id,
