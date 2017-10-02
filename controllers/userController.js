@@ -19,4 +19,14 @@ export class UserController {
        resp.end(stringify(fields, null, 1)); //returns the research output as json
      });
   }
+
+  static accountConfirmation(req, resp) {
+    UserModel.accountConfirmation(req.params.id, resp).then((fields) => {
+       resp.end(stringify(fields, null, 1)); //returns the research output as json
+    });
+  }
+
+  static setPassword(req, resp) {
+    UserModel.setPassword(req.body.user_id, req.body.password, resp);
+  }
 }

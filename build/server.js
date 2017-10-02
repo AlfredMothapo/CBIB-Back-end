@@ -114,6 +114,14 @@ app.delete('/delete-user/:id', (req, resp) => {
 app.get('/get-publication-types', (req, resp) => {
   _researchOutputController.ResearchOutputController.getPublicationTypes(req, resp);
 });
+// 19. for user to confirm their account with a verification token
+app.get('/account-confirmation/:id', (req, resp) => {
+  _userController.UserController.accountConfirmation(req, resp);
+});
+//. 20. for user to set a password for the first time
+app.put('/set-password/', jsonParser, (req, resp) => {
+  _userController.UserController.setPassword(req, resp);
+});
 
 //start the server on port 3000
 app.listen(3000, () => {
