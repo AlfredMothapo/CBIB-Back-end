@@ -16,9 +16,11 @@ export class UserModel {
   }
   //method to get access ID of a certain user
   static getUsers() {
-    const queryString = 'SELECT email, user_id ' +
-    ',CONCAT(first_name, " ", last_name) AS author ' +
-     'from users where access_id > 0';
+    const queryString = 'SELECT email, users.user_id ' +
+    ',first_name, last_name,node_id ' +
+     'from users' +
+     ' INNER JOIN membership on membership.user_id = users.user_id' +
+     ' where access_id > 0';
     return new Promise((resolve, reject) => {
       connection.query(queryString, (err, fields) => {
           if (err) return reject(err);
@@ -29,7 +31,7 @@ export class UserModel {
 
   static getAuthors() {
     const queryString = 'select user_id,email,' +
-    'CONCAT(first_name, " ", last_name) AS author ' +
+      'first_name, last_name ' +
     'from users';
     return new Promise((resolve, reject) => {
       connection.query(queryString, (err, fields) => {

@@ -1,5 +1,7 @@
 'use strict';
 
+var _publicationController = require('./controllers/publicationController');
+
 var _researchOutputController = require('./controllers/researchOutputController');
 
 var _userController = require('./controllers/userController');
@@ -13,8 +15,8 @@ var _globalAdminController = require('./controllers/globalAdminController');
 var _recyclingBinController = require('./controllers/recyclingBinController');
 
 //other required modules
-//imports
 const express = require('express'); //for converting circular objects to json
+//imports
 const cors = require('cors'); //cross-site orign
 const bodyParser = require('body-parser');
 
@@ -122,7 +124,9 @@ app.get('/account-confirmation/:id', (req, resp) => {
 app.put('/set-password/', jsonParser, (req, resp) => {
   _userController.UserController.setPassword(req, resp);
 });
-
+app.get('/get-publication-types', (req, resp) => {
+  _publicationController.PublicationController.getPublications(req, resp);
+});
 //start the server on port 3000
 app.listen(3000, () => {
   console.log('server started: listening at port:3000');

@@ -1,4 +1,5 @@
 //imports
+import { PublicationController } from './controllers/publicationController';
 import { ResearchOutputController } from './controllers/researchOutputController';
 import { UserController } from './controllers/userController';
 import { LoginController } from './controllers/loginController';
@@ -118,7 +119,9 @@ app.get('/account-confirmation/:id', (req, resp) => {
 app.put('/set-password/', jsonParser, (req, resp) => {
   UserController.setPassword(req, resp);
 });
-
+app.get('/get-publication-types', (req, resp) => {
+  PublicationController.getPublications(req, resp);
+});
 //start the server on port 3000
 app.listen(3000, () => {
   console.log('server started: listening at port:3000');
