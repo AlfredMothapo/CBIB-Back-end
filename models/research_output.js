@@ -188,4 +188,16 @@ export class ResearchOutputModel {
       resolve(this.getDetailedInformation(roId));
     });
   }
+
+  static getPublicationTypes() {
+    const queryString = 'SELECT * FROM research_types';
+    return new Promise((resolve, reject) => {
+      connection.query(queryString, (err, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(fields);
+      });      
+    });
+  }
 }

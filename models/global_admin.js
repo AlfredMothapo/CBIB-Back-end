@@ -16,7 +16,7 @@ export class GlobalAdminModel extends UserModel {
   createNode() {
 
   }
-  static createMember(firstName, lastName, email, accessId, nodeId, res) {
+  static createAccount(firstName, lastName, email, accessId, nodeId, res) {
     const sqlQuery1 = 'SELECT * FROM users WHERE users.email = ?';
     return new Promise((resolve, reject) => {
       //Checks if the given email exists within the database
@@ -58,7 +58,41 @@ export class GlobalAdminModel extends UserModel {
     });
   }
 
-  static createAdmin() {
+  static editAccount(userId, nodeId, accessId) {
+    const sqlQuery1 = 'UPDATE users SET access_id = ? WHERE user_id = ?';
+    const sqlQuery2 = 'UPDATE membership SET node_id = ? WHERE user_id = ?';
+    return new Promise((resolve, reject) => {
+      connection.query(sqlQuery1, [accessId, userId], (err) => {
+          if (err) {
+            if (err) return reject(err);
+          }
+      });
+      connection.query(sqlQuery2, [nodeId, userId], (err) => {
+          if (err) {
+            if (err) return reject(err);
+          }
+          // To display the updated details of the account
+          resolve(UserModel.accountDetails(userId));
+      });
+    });
+  }
 
+  static deleteAccount(userId, res) {
+    const sqlQuery1 = 'UPDATE users SET access_id = ? WHERE user_id = ?';
+    const sqlQuery2 = 'DELETE FROM membership WHERE user_id = ?';
+    return new Promise((resolve, reject) => {
+      connection.query(sqlQuery1, [0, userId], (err) => {
+          if (err) {
+            if (err) return reject(err);
+          }
+      });
+      connection.query(sqlQuery2, [userId], (err) => {
+          if (err) {
+            if (err) return reject(err);
+          }
+          // To display the updated details of the account
+          res.end('success');
+      });
+    });
   }
 }
