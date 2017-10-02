@@ -40,7 +40,7 @@ app.post('/outputs', jsonParser, (req, resp) => {
 });
 
 // 4. Delete a research output by id.
-app.get('/delete_research/:id',
+app.get('/delete-research/:id',
 (req, resp) => {
   ResearchOutputController.deleteById(req, resp);
 });
@@ -65,7 +65,7 @@ app.get('/detailed-research-output/:id',
 });
 //8. Create new account
 app.post('/create-account', jsonParser, (req, resp) => {
-  GlobalAdminController.createMember(req, resp);
+  GlobalAdminController.createAccount(req, resp);
 });
 //.9 For user to view all their researches on the recycling bin
 app.get('/user-recycling-bin/:id', (req, resp) => {
@@ -94,10 +94,19 @@ app.delete('/remove-author', jsonParser, (req, resp) => {
 app.get('/account-details/:id', (req, resp) => {
   UserController.accountDetails(req, resp);
 });
-// edit account details
+// 16. edit account details
 app.put('/edit-account', jsonParser, (req, resp) => {
-  UserController.editAccount(req, resp);
+  GlobalAdminController.editAccount(req, resp);
 });
+// 17. delete user_id
+app.delete('/delete-user/:id', (req, resp) => {
+  GlobalAdminController.deleteAccount(req, resp);
+});
+// 18. returns all publications with their ids
+app.get('/get-publication-types', (req, resp) => {
+  ResearchOutputController.getPublicationTypes(req, resp);
+});
+
 //start the server on port 3000
 app.listen(3000, () => {
   console.log('server started: listening at port:3000');

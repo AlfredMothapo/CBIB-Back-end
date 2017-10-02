@@ -1,5 +1,7 @@
 import { DBcon } from '../db_connection';
 import { UserModel } from './user';
+import { emailSender } from './emailSender';
+
 
 const dbCon = new DBcon();
 const connection = dbCon.getConnection();
@@ -14,7 +16,7 @@ export class GlobalAdminModel extends UserModel {
   createNode() {
 
   }
-  static createMember(firstName, lastName, email, accessId, nodeId, res) {
+  static createAccount(firstName, lastName, email, accessId, nodeId, res) {
     const sqlQuery1 = 'SELECT * FROM users WHERE users.email = ?';
     return new Promise((resolve, reject) => {
       //Checks if the given email exists within the database
@@ -22,7 +24,7 @@ export class GlobalAdminModel extends UserModel {
         if (err) { //handle error
           return reject(err);
         }
-        //If something was found on the database, insert
+        //If nothing was found on the database, insert
         if (!fields.length) {
           //generate a random token for a user
           const verificationToken = uuidv1();
@@ -30,7 +32,7 @@ export class GlobalAdminModel extends UserModel {
           const sqlQuery2 = 'INSERT INTO users(first_name, last_name, email,' +
           'verification_token, verified_status, access_id) VALUES (?, ?, ?, ?, ?, ?)';
           //now insert into the membership table
-          const sqlQuery3 = 'INSERT INTO membership(node_id, user_id) VALUES ((SELECT' +
+          const sqlQuery3 = 'INSERT INTO membership(user_id, node_id) VALUES ((SELECT' +
           ' user_id FROM users WHERE email = ?), ?)';
 
           connection.query(sqlQuery2, [firstName, lastName, email,
@@ -44,16 +46,53 @@ export class GlobalAdminModel extends UserModel {
                 throw (err3);
               }
           });
+          emailSender.createEmail(email, verificationToken, firstName);
           res.end('success');
+
+
        //}
-        } else { //If nothing was found on the db, give error message
+     } else { //If something was found on the db, give error message
           return res.end('A user with the email address already exists');
         }
       });
     });
   }
 
-  static createAdmin() {
+  static editAccount(userId, nodeId, accessId) {
+    const sqlQuery1 = 'UPDATE users SET access_id = ? WHERE user_id = ?';
+    const sqlQuery2 = 'UPDATE membership SET node_id = ? WHERE user_id = ?';
+    return new Promise((resolve, reject) => {
+      connection.query(sqlQuery1, [accessId, userId], (err) => {
+          if (err) {
+            if (err) return reject(err);
+          }
+      });
+      connection.query(sqlQuery2, [nodeId, userId], (err) => {
+          if (err) {
+            if (err) return reject(err);
+          }
+          // To display the updated details of the account
+          resolve(UserModel.accountDetails(userId));
+      });
+    });
+  }
 
+  static deleteAccount(userId, res) {
+    const sqlQuery1 = 'UPDATE users SET access_id = ? WHERE user_id = ?';
+    const sqlQuery2 = 'DELETE FROM membership WHERE user_id = ?';
+    return new Promise((resolve, reject) => {
+      connection.query(sqlQuery1, [0, userId], (err) => {
+          if (err) {
+            if (err) return reject(err);
+          }
+      });
+      connection.query(sqlQuery2, [userId], (err) => {
+          if (err) {
+            if (err) return reject(err);
+          }
+          // To display the updated details of the account
+          res.end('success');
+      });
+    });
   }
 }

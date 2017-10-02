@@ -5,6 +5,7 @@ const connection = con.getConnection();
 
 export class RecyclingBinModel {
   // Return items for a person with a given id
+
   static userRecyclingBin(userId) {
     const sqlQuery = 'SELECT recycling_bin.ro_id AS id, title, type, publication_year, ' +
     'proof_verified,proof_link, pdf_link, abstract as additional_info, GROUP_CONCAT(CONCAT(' +

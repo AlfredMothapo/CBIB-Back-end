@@ -58,4 +58,10 @@ export class ResearchOutputController {
       resp.end(stringify(fields, null, 1)); //returns the research output as json
     });
   }
+
+  static getPublicationTypes(req, resp) {
+    ResearchOutputModel.getPublicationTypes().then((fields) => {
+        resp.end(stringify(fields, null, 1)); //returns the research output as json
+    });
+  }
 }
