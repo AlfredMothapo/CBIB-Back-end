@@ -10,6 +10,8 @@
     "express-validator": "^4.1.1",
     "json-stringify-safe": "^5.0.1",
     "mysql": "^2.14.1",
+    "node-cron": "^1.2.1",
+    "nodemailer": "^4.1.1",
     "pdfkit": "^0.8.3",
     "promise-mysql": "^3.0.2",
     "secure-random": "^1.1.1",

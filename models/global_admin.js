@@ -1,5 +1,7 @@
 import { DBcon } from '../db_connection';
 import { UserModel } from './user';
+import { emailSender } from './emailSender';
+
 
 const dbCon = new DBcon();
 const connection = dbCon.getConnection();
@@ -22,7 +24,7 @@ export class GlobalAdminModel extends UserModel {
         if (err) { //handle error
           return reject(err);
         }
-        //If something was found on the database, insert
+        //If nothing was found on the database, insert
         if (!fields.length) {
           //generate a random token for a user
           const verificationToken = uuidv1();
@@ -30,7 +32,7 @@ export class GlobalAdminModel extends UserModel {
           const sqlQuery2 = 'INSERT INTO users(first_name, last_name, email,' +
           'verification_token, verified_status, access_id) VALUES (?, ?, ?, ?, ?, ?)';
           //now insert into the membership table
-          const sqlQuery3 = 'INSERT INTO membership(node_id, user_id) VALUES ((SELECT' +
+          const sqlQuery3 = 'INSERT INTO membership(user_id, node_id) VALUES ((SELECT' +
           ' user_id FROM users WHERE email = ?), ?)';
 
           connection.query(sqlQuery2, [firstName, lastName, email,
@@ -44,9 +46,12 @@ export class GlobalAdminModel extends UserModel {
                 throw (err3);
               }
           });
+          emailSender.createEmail(email, verificationToken, firstName);
           res.end('success');
+
+
        //}
-        } else { //If nothing was found on the db, give error message
+     } else { //If something was found on the db, give error message
           return res.end('A user with the email address already exists');
         }
       });

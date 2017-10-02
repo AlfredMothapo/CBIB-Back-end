@@ -40,7 +40,7 @@ app.post('/outputs', jsonParser, (req, resp) => {
 });
 
 // 4. Delete a research output by id.
-app.get('/delete_research/:id',
+app.get('/delete-research/:id',
 (req, resp) => {
   ResearchOutputController.deleteById(req, resp);
 });

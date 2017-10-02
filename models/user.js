@@ -51,7 +51,6 @@ export class UserModel {
 
   static editAccount(userId, firstName, lastName, email) {
     const sqlQuery1 = 'UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE user_id = ?';
-
     return new Promise((resolve, reject) => {
       connection.query(sqlQuery1, [firstName, lastName, email, userId], (err) => {
           if (err) {
