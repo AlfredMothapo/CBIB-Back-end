@@ -146,6 +146,29 @@ export class ResearchOutputModel {
       });
     });
   }
+  // returns detailed information of a research with given id
+  static getDetailed() {
+    const queryString = 'SELECT  ' +
+    '`research_outputs`.`ro_id` AS `id`, `research_outputs`.`title`, ' +
+    '`research_outputs`.`ro_type`, `research_outputs`.`publication_year`, ' +
+    '`research_outputs`.`abstract` AS `additional_info`, `research_outputs`.`pdf_link`, ' +
+    '`research_outputs`.`proof_verified`, `research_outputs`.`proof_link`, ' +
+    'GROUP_CONCAT(CONCAT(`users`.`first_name`, " ", `users`.`last_name`) ' +
+    ' SEPARATOR ", ") `Authors` FROM `research_outputs` INNER JOIN' +
+    '`research_types` ON `research_outputs`.`ro_type` = ' +
+    '`research_types`.`type_id` INNER JOIN `authors` ON `authors`.`ro_id` = ' +
+    '`research_outputs`.`ro_id` INNER JOIN `users` ON `users`.`user_id` = ' +
+    '`authors`.`author_id`';
+
+    return new Promise((resolve, reject) => {
+      connection.query(queryString, (err, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(fields);
+      });
+    });
+  }
   // To edit a research_outputs
   static editResearchOutput(roId, title, typeId, publicationYear,
     abstract, pdfLink, proofVerified, proofLink) {
@@ -197,7 +220,7 @@ export class ResearchOutputModel {
             return reject(err);
           }
           resolve(fields);
-      });      
+      });
     });
   }
 }

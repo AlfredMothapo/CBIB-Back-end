@@ -33,7 +33,7 @@ const jsonParser = bodyParser.json(); //process json post request's body
 //==============================================================================
 
 // 1.get basic research_outputs
-app.get('/basic-research-outputs', cors(corsOptions), (req, resp) => {
+app.get('/basic-research-output', cors(corsOptions), (req, resp) => {
   //returns all research outputs.
   _researchOutputController.ResearchOutputController.getBasic(req, resp);
 });
@@ -67,6 +67,9 @@ app.post('/create-node', jsonParser, (req, resp) => {
 //7. Returns all the details of the research
 app.get('/detailed-research-output/:id', (req, resp) => {
   _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
+});
+app.get('/detailed-research-output', (req, resp) => {
+  _researchOutputController.ResearchOutputController.getDetailed(req, resp);
 });
 //8. Create new account
 app.post('/create-account', jsonParser, (req, resp) => {
