@@ -35,7 +35,7 @@ const jsonParser = bodyParser.json(); //process json post request's body
 //==============================================================================
 
 // 1.get basic research_outputs
-app.get('/basic-research-output', cors(corsOptions), (req, resp) => {
+app.get('/basic-research-outputs', cors(corsOptions), (req, resp) => {
   //returns all research outputs.
   _researchOutputController.ResearchOutputController.getBasic(req, resp);
 });
@@ -95,10 +95,6 @@ app.put('/edit-research-output', jsonParser, (req, resp) => {
 //13. Add an author to an existing research
 app.post('/add-author', jsonParser, (req, resp) => {
   _researchOutputController.ResearchOutputController.addAuthor(req, resp);
-});
-//14. Remove an author from a research
-app.delete('/remove-author', jsonParser, (req, resp) => {
-  _researchOutputController.ResearchOutputController.removeAuthor(req, resp);
 });
 //15. For a user to view their account details
 app.get('/account-details/:id', (req, resp) => {

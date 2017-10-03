@@ -26,7 +26,7 @@ const jsonParser = bodyParser.json(); //process json post request's body
 //==============================================================================
 
 // 1.get basic research_outputs
-app.get('/basic-research-output', cors(corsOptions),
+app.get('/basic-research-outputs', cors(corsOptions),
 (req, resp) => { //returns all research outputs.
   ResearchOutputController.getBasic(req, resp);
 });
