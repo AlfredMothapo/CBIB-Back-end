@@ -90,10 +90,6 @@ app.put('/edit-research-output', jsonParser, (req, resp) => {
 app.post('/add-author', jsonParser, (req, resp) => {
   ResearchOutputController.addAuthor(req, resp);
 });
-//14. Remove an author from a research
-app.delete('/remove-author', jsonParser, (req, resp) => {
-  ResearchOutputController.removeAuthor(req, resp);
-});
 //15. For a user to view their account details
 app.get('/account-details/:id', (req, resp) => {
   UserController.accountDetails(req, resp);
