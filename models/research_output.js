@@ -171,10 +171,18 @@ export class ResearchOutputModel {
   }
   // To edit a research_outputs
   static editResearchOutput(roId, title, typeId, publicationYear,
-    abstract, pdfLink, proofVerified, proofLink) {
-    const queryString = 'UPDATE research_outputs SET title = ?, type_id = ?, ' +
-    'publication_year = ?, abstract = ?, pdf_link = ?, proof_verified =?, ' +
-    'proof_link = ? WHERE ro_id = ?';
+    abstract, pdfLink, proofVerified, proofLink, author, coauthors) {
+    const queryString = 'UPDATE research_outputs SET title = ?, publication_year = ?, ' +
+    'ro_type = ?, abstract = ?, proof_link = ?, proof_verified =?, pdf_link = ? ' +
+    'WHERE ro_id = ?';
+    //first delete all existing (co)authors
+    this.removeAuthors(roId);
+    // now add the main author_id
+    this.addAuthor(author, roId);
+    //Now add coauthors
+    for (let i = 0; i < coauthors.length; i++) {
+      this.addAuthor(coauthors[i], roId);
+    }
     return new Promise((resolve, reject) => {
       connection.query(queryString, [title, typeId, publicationYear, abstract, pdfLink,
         proofVerified, proofLink, roId], (err) => {
@@ -188,27 +196,23 @@ export class ResearchOutputModel {
 
   static addAuthor(authorId, roId) {
     const queryString1 = 'INSERT INTO authors(author_id, ro_id) VALUES(?,?)';
-    return new Promise((resolve, reject) => {
+    return new Promise((reject) => {
       connection.query(queryString1, [authorId, roId], (err) => {
           if (err) {
             return reject(err);
           }
-          // call the other method to display the up to date info
-          resolve(this.getDetailedInformation(roId));
       });
     });
   }
 
-  static removeAuthor(authorId, roId) {
-    const queryString1 = 'DELETE FROM authors WHERE author_id = ? AND ro_id = ?';
+  static removeAuthors(roId) {
+    const queryString1 = 'DELETE * FROM authors WHERE author_id = ?';
     return new Promise((resolve, reject) => {
-      connection.query(queryString1, [authorId, roId], (err) => {
+      connection.query(queryString1, [roId], (err) => {
           if (err) {
             return reject(err);
           }
       });
-      // call the other method to display the up to date info
-      resolve(this.getDetailedInformation(roId));
     });
   }
 
