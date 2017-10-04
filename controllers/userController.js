@@ -10,9 +10,9 @@ export class UserController {
   }
 
   static getUserById(req, resp) {
-    UserModel.getUserById(req.params.id).then((fields) => {
-      resp.end(stringify(fields, null, 1)); //returns the research output as json
-    });
+  UserModel.getUserById(req.params.id).then((fields) => {
+    resp.end(stringify(fields, null, 1)); //returns the research output as json
+  });
   }
 
   static getAuthors(req, resp) {

@@ -153,13 +153,8 @@ export class ResearchOutputModel {
     'research_outputs.ro_type, research_outputs.publication_year, ' +
     'research_outputs.abstract AS additional_info, research_outputs.pdf_link, ' +
     'research_outputs.proof_verified, research_outputs.proof_link, ' +
-<<<<<<< HEAD
     'GROUP_CONCAT(CONCAT(users.user_id) users.user_id as author ' +
-    ' SEPARATOR ", ") coauthors FROM research_outputs INNER JOIN' +
-=======
-    'GROUP_CONCAT(CONCAT(users.first_name, " ", users.last_name) ' +
-    ' SEPARATOR ", ") authors FROM research_outputs INNER JOIN ' +
->>>>>>> 07890952bd7a76658f764ea00619bb440601823d
+    ' SEPARATOR ", ") coauthors FROM research_outputs INNER JOIN ' +
     'research_types ON research_outputs.ro_type = ' +
     'research_types.type_id INNER JOIN authors ON authors.ro_id = ' +
     'research_outputs.ro_id INNER JOIN users ON users.user_id = ' +
