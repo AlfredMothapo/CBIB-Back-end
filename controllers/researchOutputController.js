@@ -7,9 +7,7 @@ export class ResearchOutputController {
   static getBasic(req, resp) {
     ResearchOutputModel.getBasic().then((fields) => {
       //operations based on DB fields can be done here
-        const response = {};
-        response.outputs = fields;
-        resp.end(stringify(response, null, 1));
+        resp.end(stringify(fields, null, 1));
     });
   }
 //saves a research output

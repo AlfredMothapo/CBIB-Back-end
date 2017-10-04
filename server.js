@@ -64,7 +64,7 @@ app.get('/detailed-research-output/:id',
 (req, resp) => {
   ResearchOutputController.getDetailedInformation(req, resp);
 });
-app.get('/detailed-research-output',
+app.get('/detailed-research-outputs',
 (req, resp) => {
   ResearchOutputController.getDetailed(req, resp);
 });
