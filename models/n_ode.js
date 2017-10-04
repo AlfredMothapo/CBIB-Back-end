@@ -23,4 +23,32 @@ export class NodeModel {
       });
     });
   }
+
+  static getNodes() {
+    const sqlQuery = 'SELECT node_id, node_name AS name, about_node ' +
+    'AS description, location, node_admin as nodeAdmin FROM nodes';
+
+    return new Promise((resolve, reject) => {
+      connection.query(sqlQuery, (err, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(fields);
+      });
+    });
+  }
+
+  static getNodeById(nodeId) {
+    const sqlQuery = 'SELECT node_id, node_name AS name, about_node ' +
+    'AS description, location, node_admin as nodeAdmin FROM nodes WHERE node_id = ?';
+
+    return new Promise((resolve, reject) => {
+      connection.query(sqlQuery, [nodeId], (err, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(fields[0]);
+      });
+    });
+  }
 }
