@@ -118,7 +118,7 @@ app.put('/set-password/', jsonParser, (req, resp) => {
 app.get('/get-publication-types', (req, resp) => {
   PublicationController.getPublications(req, resp);
 });
-app.get('/get-user-by-id/:id', (req, resp) => {
+app.get('/get-user/:id', (req, resp) => {
   UserController.getUserById(req, resp);
 });
 app.get('/get-publication-type/:id', (req, resp) => {
