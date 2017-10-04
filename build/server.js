@@ -123,6 +123,9 @@ app.put('/set-password/', jsonParser, (req, resp) => {
 app.get('/get-publication-types', (req, resp) => {
   _publicationController.PublicationController.getPublications(req, resp);
 });
+app.get('/get-user-by-id/:id', (req, resp) => {
+  _userController.UserController.getUserById(req, resp);
+});
 //start the server on port 3000
 app.listen(3000, () => {
   console.log('server started: listening at port:3000');
