@@ -9,4 +9,10 @@ export class PublicationController {
       resp.end(stringify(fields, null, 1));
     });
   }
+
+  static getPublicationsById(req, resp) {
+    PublicationModel.getPublicationsById(req.params.id).then((fields) => {
+      resp.end(stringify(fields, null, 1));
+    });
+  }
 }

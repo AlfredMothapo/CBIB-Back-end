@@ -124,13 +124,11 @@ export class ResearchOutputModel {
 
   // returns detailed information of a research with given id
   static getDetailedInformation(roId) {
-    const queryString = 'SELECT  ' +
-    'research_outputs.ro_id AS id,pdf_link,text, research_outputs.title, ' +
-    'research_outputs.ro_type as type, research_outputs.publication_year, ' +
-    'research_outputs.abstract AS additional_info, research_outputs.pdf_link, ' +
-    'research_outputs.proof_verified, research_outputs.proof_link, users.user_id as author, ' +
-    'GROUP_CONCAT(CONCAT(users.user_id) ' +
-    ' SEPARATOR ", ") coauthors FROM research_outputs INNER JOIN ' +
+    const queryString = 'SELECT research_outputs.ro_id AS id, ' +
+    'title, ro_type as type, publication_year, users.user_id AS ' +
+    'author, GROUP_CONCAT(CONCAT(users.user_id) SEPARATOR ", ") ' +
+    'coauthors, abstract AS additional_info, proof_link, ' +
+    'proof_verified, pdf_link, text FROM research_outputs INNER JOIN ' +
     'research_types ON research_outputs.ro_type = ' +
     'research_types.type_id INNER JOIN authors ON authors.ro_id = ' +
     'research_outputs.ro_id INNER JOIN users ON users.user_id = ' +
@@ -148,17 +146,15 @@ export class ResearchOutputModel {
   }
   // returns detailed information of a research with given id
   static getDetailed() {
-    const queryString = 'SELECT  ' +
-    'research_outputs.ro_id AS id,pdf_link,text, research_outputs.title, ' +
-    'research_outputs.ro_type, research_outputs.publication_year, ' +
-    'research_outputs.abstract AS additional_info, research_outputs.pdf_link, ' +
-    'research_outputs.proof_verified, research_outputs.proof_link, ' +
-    'GROUP_CONCAT(CONCAT(users.user_id) users.user_id as author ' +
-    ' SEPARATOR ", ") coauthors FROM research_outputs INNER JOIN ' +
+    const queryString = 'SELECT research_outputs.ro_id AS id, ' +
+    'title, ro_type as type, publication_year, users.user_id AS ' +
+    'author, GROUP_CONCAT(CONCAT(users.user_id) SEPARATOR ", ") ' +
+    'coauthors, abstract AS additional_info, proof_link, ' +
+    'proof_verified, pdf_link, text FROM research_outputs INNER JOIN ' +
     'research_types ON research_outputs.ro_type = ' +
     'research_types.type_id INNER JOIN authors ON authors.ro_id = ' +
     'research_outputs.ro_id INNER JOIN users ON users.user_id = ' +
-    'authors.author_id';
+    'authors.author_id GROUP BY research_outputs.ro_id ';
 
     return new Promise((resolve, reject) => {
       connection.query(queryString, (err, fields) => {

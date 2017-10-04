@@ -12,4 +12,16 @@ export class PublicationModel {
       });
     });
   }
+
+  static getPublicationsById(publicationId) {
+    const sql = 'SELECT type_id, type FROM research_type';
+    return new Promise((reject, resolve) => {
+      connection.query(sql, (err, fields) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(fields);
+      });
+    });
+  }
 }
