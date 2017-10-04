@@ -19,8 +19,7 @@ export class UserModel {
     const queryString = 'SELECT email, users.user_id ' +
     ',first_name, last_name,node_id ' +
      'from users' +
-     ' INNER JOIN membership on membership.user_id = users.user_id' +
-     ' where access_id > 0';
+     ' INNER JOIN membership on membership.user_id = users.user_id';
     return new Promise((resolve, reject) => {
       connection.query(queryString, (err, fields) => {
           if (err) return reject(err);
