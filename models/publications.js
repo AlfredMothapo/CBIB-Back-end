@@ -14,12 +14,10 @@ export class PublicationModel {
   }
 
   static getPublicationsById(publicationId) {
-    const sql = 'SELECT type_id, type FROM research_type';
+    const sql = 'select type_id,type from research_types';
     return new Promise((reject, resolve) => {
       connection.query(sql, (err, fields) => {
-        if (err) {
-          reject(err);
-        }
+        if (err) reject(err);
         resolve(fields);
       });
     });

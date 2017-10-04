@@ -124,6 +124,12 @@ app.get('/get-user/:id', (req, resp) => {
 app.get('/get-publication-type/:id', (req, resp) => {
   PublicationController.getPublicationsById(req, resp);
 });
+app.get('/get-nodes', (req, resp) => {
+  NodeController.getNodes(req, resp);
+});
+app.get('/get-node/:id', (req, resp) => {
+  NodeController.getNodeById(req, resp);
+});
 //start the server on port 3000
 app.listen(3000, () => {
   console.log('server started: listening at port:3000');
