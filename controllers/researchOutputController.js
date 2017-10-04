@@ -14,10 +14,10 @@ export class ResearchOutputController {
   static saveResearchOutput(req, resp) {
     //creates a new research output.
     const researchOutput = new ResearchOutputModel(req.body.title, req.body.publication_year,
-     req.body.additional_info, req.body.text, req.body.type, req.body.author,
-     req.body.coauthors, req.body.proof_link, req.body.proof_verified);
-     researchOutput.save()
-       .then(() => resp.end('success')); //saves the research output
+      req.body.additional_info, req.body.text, req.body.type, req.body.author,
+      req.body.coauthors, req.body.proof_link, req.body.proof_verified);
+    researchOutput.save()  //saves the research output
+       .then(() => resp.end('success'));
   }
   //returns a research output given an id
   static getBasicById(req, resp) {
