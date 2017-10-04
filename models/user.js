@@ -31,9 +31,9 @@ export class UserModel {
 
   static getUserById(userId) {
     const sqlQuery = 'SELECT email, users.user_id,first_name, ' +
-    'last_name,node_id from usersJOIN membership on ' +
+    'last_name,node_id from users JOIN membership on ' +
     'membership.user_id = users.user_id where users.user_id = ?';
-    
+
     return new Promise((resolve, reject) => {
     connection.query(sqlQuery, [userId], (err, fields) => {
         if (err) return reject(err);
