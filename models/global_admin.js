@@ -29,27 +29,27 @@ export class GlobalAdminModel extends UserModel {
           //generate a random token for a user
           const verificationToken = uuidv1();
           //For adding into the users table
-          const sqlQuery2 = 'INSERT INTO users(first_name, last_name, email,' +
-          'verification_token, verified_status, access_id) VALUES (?, ?, ?, ?, ?, ?)';
+          const password = 'initialpassword';
+          const sqlQuery2 = 'INSERT INTO users(first_name, last_name, email, password,' +
+          'verification_token, verified_status, access_id) VALUES (?, ?, ?, ?, ?, ?, ?)';
           //now insert into the membership table
           const sqlQuery3 = 'INSERT INTO membership(user_id, node_id) VALUES ((SELECT' +
           ' user_id FROM users WHERE email = ?), ?)';
 
-          connection.query(sqlQuery2, [firstName, lastName, email,
+          connection.query(sqlQuery2, [firstName, lastName, email, password,
             verificationToken, 0, accessId], (err2) => {
-              if (err) {
-                throw (err2);
+              if (err2) {
+                return reject(err2);
               }
-          });
-          connection.query(sqlQuery3, [email, nodeId], (err3) => {
-              if (err) {
-                throw (err3);
-              }
-          });
-        //  emailSender.createEmail(email, verificationToken, firstName);
-          res.end('success');
 
-
+              connection.query(sqlQuery3, [email, nodeId], (err3) => {
+                  if (err3) {
+                    return reject(err3);
+                  }
+                  res.end('success');
+              });
+            });
+            //  emailSender.createEmail(email, verificationToken, firstName);
        //}
      } else { //If something was found on the db, give error message
           return res.end('A user with the email address already exists');

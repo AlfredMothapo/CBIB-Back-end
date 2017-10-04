@@ -4,8 +4,8 @@ export class DBcon {
   constructor() {
     this.con = mysql.createConnection({
         host: 'localhost',
-        user: 'root', //change to your username
-        password: '', //your password
+        user: 'emilie', //change to your username
+        password: '1234', //your password
         database: 'cbib'//your database name
     });
   }
