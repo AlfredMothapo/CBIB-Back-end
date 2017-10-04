@@ -7,7 +7,6 @@ const con = new DBcon();
 const connection = con.getConnection();
 
 export class LoginModel {
-
   static getUser(username, password, resp) {
     const sql2 = 'SELECT password FROM users WHERE email = ?';
     connection.query(sql2, [username], (err, fields) => {
