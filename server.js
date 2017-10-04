@@ -69,7 +69,7 @@ app.get('/detailed-research-outputs',
   ResearchOutputController.getDetailed(req, resp);
 });
 //8. Create new account
-app.post('/create-account', jsonParser, (req, resp) => {
+app.post('/create-user', jsonParser, (req, resp) => {
   GlobalAdminController.createAccount(req, resp);
 });
 //.9 For user to view all their researches on the recycling bin
