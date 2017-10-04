@@ -21,17 +21,16 @@ export class ResearchOutputModel {
     }
     //get basic research outputs.
     static getBasic() {
-      const sql = 'SELECT  ' +
-      'research_outputs.ro_id AS id,pdf_link,text, research_outputs.title, ' +
-      'research_types.type_id as type , research_outputs.publication_year, ' +
-      'research_outputs.abstract AS additional_info, ' +
-      'GROUP_CONCAT(CONCAT(users.first_name, " ", users.last_name) ' +
-      ' SEPARATOR ", ") Authors FROM research_outputs INNER JOIN ' +
+      const sql = 'SELECT research_outputs.ro_id AS id, ' +
+      'title, ro_type as type, publication_year, users.user_id AS ' +
+      'author, GROUP_CONCAT(CONCAT(users.user_id) SEPARATOR ", ") ' +
+      'coauthors, abstract AS additional_info, ' +
+      'pdf_link, text FROM research_outputs INNER JOIN ' +
       'research_types ON research_outputs.ro_type = ' +
       'research_types.type_id INNER JOIN authors ON authors.ro_id = ' +
       'research_outputs.ro_id INNER JOIN users ON users.user_id = ' +
-      'authors.author_id ' +
-      'GROUP BY research_outputs.ro_id';
+      'authors.author_id GROUP BY research_outputs.ro_id ';
+
       return new Promise((resolve, reject) => {
         connection.query(sql, (err, fields) => {
             if (err) return reject(err);
@@ -41,19 +40,16 @@ export class ResearchOutputModel {
     }
     //get basic researh outputs by id.
     static getBasicById(roId) {
-      const queryString = 'SELECT  ' +
-      'research_outputs.ro_id AS id,pdf_link,text, research_outputs.pdf_link, ' +
-      'research_outputs.title, research_outputs.publication_year, ' +
-      'research_outputs.abstract AS additional_info, ' +
-      'research_types.type AS type, ' +
-      'GROUP_CONCAT(CONCAT(users.first_name, " ", ' +
-      'users.last_name) SEPARATOR ", ") Authors FROM ' +
-      'research_outputs INNER JOIN research_types ON ' +
-      'research_outputs.ro_type = research_types.type_id INNER JOIN ' +
-      'authors ON authors.ro_id = research_outputs.ro_id INNER JOIN ' +
-      'users ON users.user_id = authors.author_id WHERE ' +
-      'research_outputs.ro_id = ? GROUP BY ' +
-      'research_outputs.ro_id';
+      const queryString = 'SELECT research_outputs.ro_id AS id, ' +
+      'title, ro_type as type, publication_year, users.user_id AS ' +
+      'author, GROUP_CONCAT(CONCAT(users.user_id) SEPARATOR ", ") ' +
+      'coauthors, abstract AS additional_info, ' +
+      'pdf_link, text FROM research_outputs INNER JOIN ' +
+      'research_types ON research_outputs.ro_type = ' +
+      'research_types.type_id INNER JOIN authors ON authors.ro_id = ' +
+      'research_outputs.ro_id INNER JOIN users ON users.user_id = ' +
+      'authors.author_id WHERE research_outputs.ro_id = ? ' +
+      'GROUP BY research_outputs.ro_id';
 
       return new Promise((resolve, reject) => {
         connection.query(queryString, [roId], (err, fields) => {
