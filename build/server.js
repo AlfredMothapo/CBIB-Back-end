@@ -70,7 +70,7 @@ app.post('/create-node', jsonParser, (req, resp) => {
 app.get('/detailed-research-output/:id', (req, resp) => {
   _researchOutputController.ResearchOutputController.getDetailedInformation(req, resp);
 });
-app.get('/detailed-research-output', (req, resp) => {
+app.get('/detailed-research-outputs', (req, resp) => {
   _researchOutputController.ResearchOutputController.getDetailed(req, resp);
 });
 //8. Create new account
