@@ -10,7 +10,7 @@ class DBcon {
     this.con = mysql.createConnection({
       host: 'localhost',
       user: 'root', //change to your username
-      password: '', //your password
+      password: 'adminsab', //your password
       database: 'cbib' //your database name
     });
   }
