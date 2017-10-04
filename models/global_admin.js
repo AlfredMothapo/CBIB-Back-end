@@ -46,7 +46,7 @@ export class GlobalAdminModel extends UserModel {
                 throw (err3);
               }
           });
-          emailSender.createEmail(email, verificationToken, firstName);
+        //  emailSender.createEmail(email, verificationToken, firstName);
           res.end('success');
 
 
