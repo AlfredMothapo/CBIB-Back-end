@@ -72,27 +72,36 @@ export class ResearchOutputModel {
       'ro_type, abstract, proof_link, proof_verified, pdf_link) VALUES (?,?, ?,?, ?, ?, ?, ?)';
       const sql2 = 'Insert INTO authors (author_id,ro_id) VALUES' +
       '(?,(SELECT ro_id FROM research_outputs WHERE title=?))';
-      return new Promise(() => {
+      return new Promise((resolve, reject) => {
+        
+        // NOTE: this code require transaction to keep data integrity
+        // in the case of one of the inserts failing
+        
+        // insert research_outputs
         this.connection.query(sql, [this.title, this.text, this.publication_year, this.type,
         this.additional_info,
         this.proof_link, this.proof_verified, this.pdf_link],
           (error) => {
           if (error) {
-            throw error;
+            return reject(error);
           }
-        });
-        this.connection.query(sql2, [this.author, this.title], (error) => {
-          if (error) {
-            throw error;
-          }
-        });
-        for (let i = 0; i < this.coauthors.length; i++) {
-          this.connection.query(sql2, [this.coauthors[i], this.title], (error) => {
+          // insert authors
+          this.connection.query(sql2, [this.author, this.title], (error) => {
             if (error) {
-              throw error;
+              return reject(error);
             }
+            // insert coauthors
+            for (let i = 0; i < this.coauthors.length; i++) {
+              this.connection.query(sql2, [this.coauthors[i], this.title], (error) => {
+                if (error) {
+                  return reject(error);
+                }
+              });
+            }
+            // done
+            resolve();
           });
-        }
+        });
       });
   }
 
