@@ -126,11 +126,11 @@ export class ResearchOutputModel {
   static getDetailedInformation(roId) {
     const queryString = 'SELECT  ' +
     'research_outputs.ro_id AS id,pdf_link,text, research_outputs.title, ' +
-    'research_outputs.ro_type, research_outputs.publication_year, ' +
+    'research_outputs.ro_type as type, research_outputs.publication_year, ' +
     'research_outputs.abstract AS additional_info, research_outputs.pdf_link, ' +
-    'research_outputs.proof_verified, research_outputs.proof_link, ' +
-    'GROUP_CONCAT(CONCAT(users.first_name, " ", users.last_name) ' +
-    ' SEPARATOR ", ") Authors FROM research_outputs INNER JOIN ' +
+    'research_outputs.proof_verified, research_outputs.proof_link, users.user_id as author, ' +
+    'GROUP_CONCAT(CONCAT(users.user_id) ' +
+    ' SEPARATOR ", ") coauthors FROM research_outputs INNER JOIN ' +
     'research_types ON research_outputs.ro_type = ' +
     'research_types.type_id INNER JOIN authors ON authors.ro_id = ' +
     'research_outputs.ro_id INNER JOIN users ON users.user_id = ' +
@@ -154,7 +154,7 @@ export class ResearchOutputModel {
     'research_outputs.abstract AS additional_info, research_outputs.pdf_link, ' +
     'research_outputs.proof_verified, research_outputs.proof_link, ' +
     'GROUP_CONCAT(CONCAT(users.first_name, " ", users.last_name) ' +
-    ' SEPARATOR ", ") Authors FROM research_outputs INNER JOIN ' +
+    ' SEPARATOR ", ") authors FROM research_outputs INNER JOIN' +
     'research_types ON research_outputs.ro_type = ' +
     'research_types.type_id INNER JOIN authors ON authors.ro_id = ' +
     'research_outputs.ro_id INNER JOIN users ON users.user_id = ' +
