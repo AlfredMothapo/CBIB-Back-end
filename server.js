@@ -84,7 +84,7 @@ app.delete('/delete-permanently/:id', jsonParser, (req, resp) => {
   RecyclingBinController.deletePermanently(req, resp);
 });
 //12. edit an existing ro
-app.put('/edit-research-output', jsonParser, (req, resp) => {
+app.put('/update-research-output', jsonParser, (req, resp) => {
   ResearchOutputController.editResearchOutput(req, resp);
 });
 //13. Add an author to an existing research
