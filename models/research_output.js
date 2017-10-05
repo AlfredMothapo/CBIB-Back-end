@@ -151,11 +151,11 @@ export class ResearchOutputModel {
 
     return new Promise(() => {
       // Copying the data from the research outputs table to the recycling_bin table
-      connection.query(queryString1, [roId, roId], (err) => {
-          if (err) {
-            throw (err);
-          }
-      });
+      // connection.query(queryString1, [roId], (err) => {
+      //     if (err) {
+      //       throw (err);
+      //     }
+      // });
       //Deleting data from the research_outputs table
       connection.query(queryString2, [roId], (err) => {
           if (err) {
