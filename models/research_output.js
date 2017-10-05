@@ -5,7 +5,7 @@ const connection = dbCon.getConnection();
 
 export class ResearchOutputModel {
     constructor(title, pubYear, addInfo, text, type, author, coauthors,
-    prooflink, proofver) {
+    prooflink, proofver, pdf) {
         this.title = title;
         this.text = text;
         this.publication_year = pubYear;
@@ -15,7 +15,7 @@ export class ResearchOutputModel {
         this.proof_verified = proofver;
         this.proof_link = prooflink;
         this.author = author;
-        this.pdf_link = 'Hello world';
+        this.pdf_link = pdf;
         this.coauthors = coauthors;
         this.connection = this.db_con.getConnection(); //db connection
     }
@@ -105,6 +105,44 @@ export class ResearchOutputModel {
       });
   }
 
+  static editResearchOutput(roId, title, typeId, publicationYear, abstract, pdfLink,
+    proofVerified, proofLink, text, author, coauthors) {
+    /*roId, title, typeId, publicationYear,
+    abstract, pdfLink, proofVerified, proofLink, , coauthors, text) {*/
+    const queryString1 = 'UPDATE research_outputs SET title = ?, publication_year = ?, ' +
+    'ro_type = ?, abstract = ?, pdf_link = ?, proof_verified =?, proof_link = ?, text = ? ' +
+    'WHERE ro_id = ?';
+
+    const queryString2 = 'Insert INTO authors (author_id, ro_id) VALUES(?,?)';
+
+    return new Promise((resolve, reject) => {
+      // Update the research
+      connection.query(queryString1, [title, publicationYear, typeId, abstract, pdfLink,
+         proofVerified, proofLink, text, roId], (err) => {
+          /*, typeId, abstract, proofLink,
+            proofVerified, pdfLink, textyy*/
+          if (err) {
+            return reject(err);
+          }
+          resolve('success');
+      });
+      // Add the author
+      connection.query(queryString2, [author, roId], (error) => {
+        if (error) {
+          throw error;
+        }
+      });
+      // Add the coauthors
+      for (let i = 0; i < coauthors.length; i++) {
+        connection.query(queryString2, [coauthors[i], roId], (error) => {
+          if (error) {
+            throw error;
+          }
+        });
+      }
+    });
+  }
+
   static deleteById(roId) {
     /* This method moves the data from the rese table to recycling_bin table*/
     const queryString1 = 'INSERT INTO recycling_bin SELECT * FROM research_outputs WHERE ' +
@@ -171,29 +209,7 @@ export class ResearchOutputModel {
     });
   }
   // To edit a research_outputs
-  static editResearchOutput(roId, title, typeId, publicationYear,
-    abstract, pdfLink, proofVerified, proofLink, author, coauthors) {
-    const queryString = 'UPDATE research_outputs SET title = ?, publication_year = ?, ' +
-    'ro_type = ?, abstract = ?, proof_link = ?, proof_verified =?, pdf_link = ? ' +
-    'WHERE ro_id = ?';
-    //first delete all existing (co)authors
-    this.removeAuthors(roId);
-    // now add the main author_id
-    this.addAuthor(author, roId);
-    //Now add coauthors
-    for (let i = 0; i < coauthors.length; i++) {
-      this.addAuthor(coauthors[i], roId);
-    }
-    return new Promise((resolve, reject) => {
-      connection.query(queryString, [title, typeId, publicationYear, abstract, pdfLink,
-        proofVerified, proofLink, roId], (err) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve(this.getDetailedInformation(roId));
-      });
-    });
-  }
+
 
   static addAuthor(authorId, roId) {
     const queryString1 = 'INSERT INTO authors(author_id, ro_id) VALUES(?,?)';
@@ -207,7 +223,7 @@ export class ResearchOutputModel {
   }
 
   static removeAuthors(roId) {
-    const queryString1 = 'DELETE * FROM authors WHERE author_id = ?';
+    const queryString1 = 'DELETE FROM authors WHERE ro_id = ?';
     return new Promise((resolve, reject) => {
       connection.query(queryString1, [roId], (err) => {
           if (err) {

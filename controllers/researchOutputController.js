@@ -19,6 +19,16 @@ export class ResearchOutputController {
     researchOutput.save()  //saves the research output
        .then(() => resp.end('success'));
   }
+  // edit an existing research
+  static editResearchOutput(req, resp) {
+    ResearchOutputModel.removeAuthors(req.body.id);
+    ResearchOutputModel.editResearchOutput(req.body.id, req.body.title,
+       req.body.type, req.body.publication_year, req.body.additional_info, req.body.pdf_link,
+       req.body.proof_verified, req.body.proof_link, req.body.text,
+       req.body.author, req.body.coauthors).then((fields) => {
+         resp.end(stringify(fields, null, 1)); //returns the research output as json
+     });
+  }
   //returns a research output given an id
   static getBasicById(req, resp) {
    ResearchOutputModel.getBasicById(req.params.id).then((fields) => {
@@ -40,15 +50,6 @@ export class ResearchOutputController {
    ResearchOutputModel.getDetailed().then((fields) => {
       resp.end(stringify(fields, null, 1)); //returns the research output as json
     });
-  }
-
-  static editResearchOutput(req, resp) {
-    ResearchOutputModel.editResearchOutput(req.body.ro_id, req.body.title, req.body.type_id,
-       req.body.publication_year, req.body.additional_info, req.body.pdf_link,
-       req.body.proof_verified, req.body.proof_link, req.body.author,
-       req.body.coauthors).then((fields) => {
-         resp.end(stringify(fields, null, 1)); //returns the research output as json
-     });
   }
 
   static addAuthor(req, resp) {
