@@ -4,9 +4,9 @@ const stringify = require('json-stringify-safe');
 
 export class NodeController {
   static saveNode(req, resp) {
-    NodeModel.createNode(req.body.node_name, req.body.description, req.body.nodeAdmin,
-      req.body.location);
-      resp.end('success');
+    NodeModel.createNode(req.body.name, req.body.description, req.body.nodeAdmin,
+      req.body.location)
+      .then(() => resp.end('success'));
   }
 
   static getNodes(req, resp) {

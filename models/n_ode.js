@@ -10,16 +10,17 @@ export class NodeModel {
     const sqlQuery2 = 'INSERT INTO membership (node_id,user_id)' +
     ' values ((SELECT node_id FROM nodes WHERE node_name = ?),?)';
 
-    return new Promise(() => {
+    return new Promise((resolve, reject) => {
       connection.query(sqlQuery, [nodeName, nodeDescription, location, admin], (err) => {
         if (err) {
-          throw (err);
+          return reject(err);
         }
-      });
-      connection.query(sqlQuery2, [nodeName, admin], (err) => {
-        if (err) {
-          throw (err);
-        }
+        connection.query(sqlQuery2, [nodeName, admin], (err) => {
+          if (err) {
+            return reject(err);
+          }
+        });
+        resolve();
       });
     });
   }

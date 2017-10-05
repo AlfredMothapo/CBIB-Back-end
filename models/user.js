@@ -17,7 +17,7 @@ export class UserModel {
   //method to get access ID of a certain user
   static getUsers() {
     const queryString = 'SELECT email, users.user_id ' +
-    ',first_name, last_name,node_id ' +
+    ',first_name, last_name,node_id, access_id ' +
      'from users' +
      ' INNER JOIN membership on membership.user_id = users.user_id';
     return new Promise((resolve, reject) => {
@@ -85,7 +85,7 @@ export class UserModel {
           //If something was found on the db, give error message
             connection.query(sqlQuery2, [verificationToken], (err1) => {
               if (err1) {
-                reject(err1);
+                return reject(err1);
               }
               resolve(fields);
             });
@@ -97,14 +97,15 @@ export class UserModel {
   static setPassword(userId, password, resp) {
     const saltRounds = 11;
     const sqlQuery = 'UPDATE users SET password = ? WHERE user_id = ?';
-    return new Promise(() => {
+    return new Promise((resolve, reject) => {
       //password encryption
       const hash = bcrypt.hashSync(password, saltRounds);
       connection.query(sqlQuery, [hash, userId], (err3) => {
         if (err3) {
-          throw (err3);
+          return reject(err3);
         }
-      resp.end('sucess');
+        resp.end('sucess');
+        resolve();
         });
     });
   }

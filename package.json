@@ -34,6 +34,7 @@
     "build-controllers": "babel -d ./build/controllers ./controllers -s",
     "build-server": "babel -d ./build ./server.js -s",
     "start": "nodemon ./build/server.js",
+    "build_only": "npm run clean  && npm run build-models && npm run build-controllers && npm run build-root && npm run build-server",
     "build": "npm run clean  && npm run build-models && npm run build-controllers && npm run build-root && npm run build-server && npm run start",
     "clean": "rm -rf build && mkdir build "
   }
